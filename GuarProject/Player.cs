@@ -51,6 +51,15 @@ namespace GuarProject
                 Stealth = 3;
                 Magicka = 1;
             }
+            else if(role == Role.Wizard)
+            {
+                Strength = 1;
+                Health = 3;
+                Accuracy = 5;
+                Speech = 3;
+                Stealth = 2;
+                Magicka = 6;
+            }
         }
     }
 }

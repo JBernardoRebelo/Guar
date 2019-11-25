@@ -9,6 +9,7 @@ namespace GuarProject
     {
         Paladin,
         Assassin,
-        Swindler
+        Swindler,
+        Wizard
     }
 }
