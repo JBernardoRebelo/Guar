@@ -79,13 +79,19 @@ namespace GuarProject
         // Pick pocket
 
         // Decorate weapon
-        public void DecorateWeapon(Stack<IItem> inv)
+        public void DecorateWeapon(Weapon weapon, Weapon wpnDecorator)
         {
-            // Add combination weapon to inv and remove other items
-            foreach (IItem i in inv)
+            Weapon newWeapon;
+
+            if(wpnDecorator is RedGem || weapon is RedGem)
             {
-               
+                // Decorate fire weapon
+                newWeapon = new RedGem(weapon);
+                Inventory.Push(newWeapon);
+                Render.UpdateItemFeed(this);
             }
+
+            // Other decorations
 
             Console.WriteLine("Your weapon has been decorated");
         }

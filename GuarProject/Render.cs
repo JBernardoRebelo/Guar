@@ -121,7 +121,7 @@ namespace GuarProject
             if (decoratables)
             {
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.WriteLine("...Do you wan't to?");
+                Console.WriteLine("...Do you wan't to merge?");
                 Console.ForegroundColor = ConsoleColor.Gray;
 
                 Console.Write("-> ");
@@ -130,9 +130,76 @@ namespace GuarProject
                 // Call merge method
                 if (choice == "yes" || choice == "y")
                 {
-                    p.DecorateWeapon(p.Inventory);
+                    MergeWeaponChoice(p);
                 }
             }
+        }
+
+        public void MergeWeaponChoice(Player p)
+        {
+            string item1 = default;
+            string item2 = default;
+            List<string> itemNames = new List<string>();
+            Weapon Dec1 = default;
+            Weapon Dec2 = default;
+
+        Found1:
+            Console.WriteLine($"The Item you want to merge");
+            Console.Write($"-> ");
+            item1 = Console.ReadLine();
+
+        Found2:
+            Console.WriteLine($"The 2nd Item you want to merge");
+            Console.Write($"-> ");
+            item2 = Console.ReadLine();
+
+            //foreach (IItem i in p.Inventory)
+            //{
+            //    itemNames.Add(i.Name);
+            //}
+
+            //// While the user's choice is not on the list ask
+            //if (!itemNames.Contains(item1))
+            //{
+            //    Console.WriteLine($"The Item you want to merge");
+            //    Console.Write($"-> ");
+            //    item1 = Console.ReadLine();
+            //}
+
+            //// While the user's choice is not on the list ask
+            //while (!itemNames.Contains(item2))
+            //{
+            //    Console.WriteLine($"The 2nd Item you want to merge");
+            //    Console.Write($"-> ");
+            //    item2 = Console.ReadLine();
+            //}
+
+            foreach (IItem i in p.Inventory)
+            {
+                if (item1 == i.Name && i is Weapon)
+                {
+                    Dec1 = i as Weapon;
+                }
+                //else
+                //{
+                //    Console.WriteLine($"{item1} is not is not a valid item!");
+                //    goto Found1;
+                //}
+
+                if (item2 == i.Name && i is Weapon)
+                {
+                    Dec2 = i as Weapon;
+                }
+                //else
+                //{
+                //    Console.WriteLine($"{item2} is not is " +
+                //        $"not a valid item!");
+                //    goto Found2;
+                //}
+            }
+
+            // Call player merge decorator
+            p.DecorateWeapon(Dec1, Dec2);
         }
 
         // Accepts Player, prints all stats onscreen

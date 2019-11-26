@@ -70,12 +70,13 @@ namespace GuarProject
             // Description 2
             rnd.Act1Description1("Act1_Description1.txt");
 
+
+            // Display game state
+            rnd.DisplayGameMode(gamestate);
+
             // Exploration mode 1
             do
             {
-                // Display game state
-                rnd.DisplayGameMode(gamestate);
-
                 // Action option
                 option = rnd.Option();
 
