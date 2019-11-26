@@ -67,9 +67,10 @@ namespace GuarProject
             // Exploration mode 1
             do
             {
-                // Display
+                // Display game state
                 rnd.DisplayGameMode(gamestate);
 
+                // Action option
                 option = rnd.Option();
 
                 while (!validExplorationOptions.Any(x => x.Contains(option)))
@@ -104,6 +105,8 @@ namespace GuarProject
                 rnd.CmdCheatSheet("CommandCheatSheet.txt");
 
             // Show inventory
+            if (action == validExplorationOptions[1])
+                rnd.DisplayInventory(p);
 
             // Check stats
             if (action == validExplorationOptions[2])

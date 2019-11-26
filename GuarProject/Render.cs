@@ -75,14 +75,28 @@ namespace GuarProject
             return role;
         }
 
+        // Print Inventory
+        public void DisplayInventory(Player p)
+        {
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine("\n----- INVENTORY -----");
+            foreach (IItem i in p.Inventory)
+            {
+                Console.WriteLine($" -> {i.Name}");
+            }
+            Console.WriteLine("----- --------- -----\n");
+            Console.ForegroundColor = ConsoleColor.Gray;
+        }
+
         // Accepts Player, prints all stats onscreen
         public void PrintStats(Player p)
         {
-            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine();
             Console.WriteLine("----- YOUR STATS -----");
             Console.WriteLine($"Level: {p.Lvl}");
             Console.WriteLine($"Role: {p.Role}");
+            Console.WriteLine();
             Console.WriteLine($"Strength: {p.Strength}");
             Console.WriteLine($"Health: {p.Health}");
             Console.WriteLine($"Accuracy: {p.Accuracy}");
