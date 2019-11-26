@@ -12,19 +12,18 @@ namespace GuarProject
         public int Speech { get; private set; }
         public int Stealth { get; private set; }
         public int Magicka { get; private set; }
+        public int Lvl { get; private set; } // Player' lvl
+        public int HP { get; set; } // HP is health * 10 
+        public int Energy { get; set; } // Energy is Magicka * 10 
+        public Role Role { get; private set; } // Player's role
+        public Stack<IItem> Inventory { get; set; }
 
-        // HP is health * 10
-        public int HP { get; set; }
-
-        // Energy is Magicka * 10
-        public int Energy { get; set;}
-
-        // Player's role
-        public Role Role { get; private set; }
-
+        // Player constructor, accepts a role
         public Player(Role role)
         {
             Role = role;
+            Inventory = new Stack<IItem>();
+            Lvl = 1;
         }
 
         // Level up, update stats
@@ -38,6 +37,7 @@ namespace GuarProject
             Speech += speech;
             Stealth += stealth;
             Magicka += magicka;
+            Lvl++;
         }
 
         // Player actions
@@ -49,6 +49,9 @@ namespace GuarProject
         // Methods to assign stat changes
         public void UpdateStatsRole(Role role)
         {
+            // Starter weapon
+            IItem weapon;
+
             // Assign role stats // Add weapon
             if (role == Role.Paladin)
             {
@@ -58,6 +61,9 @@ namespace GuarProject
                 Speech = 2;
                 Stealth = 1;
                 Magicka = 1;
+
+                weapon = new HeavySword();
+                Inventory.Push(weapon);
             }
             else if (role == Role.Assassin)
             {
@@ -67,6 +73,9 @@ namespace GuarProject
                 Speech = 2;
                 Stealth = 6;
                 Magicka = 1;
+
+                weapon = new Dagger();
+                Inventory.Push(weapon);
             }
             else if (role == Role.Swindler)
             {
@@ -76,6 +85,9 @@ namespace GuarProject
                 Speech = 6;
                 Stealth = 3;
                 Magicka = 1;
+
+                weapon = new Dagger();
+                Inventory.Push(weapon);
             }
             else if (role == Role.Wizard)
             {
@@ -85,6 +97,9 @@ namespace GuarProject
                 Speech = 3;
                 Stealth = 2;
                 Magicka = 6;
+
+                weapon = new Staff();
+                Inventory.Push(weapon);
             }
         }
     }

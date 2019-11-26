@@ -8,6 +8,14 @@ namespace GuarProject
 {
     public class Render
     {
+        public void UpdatePlayer1(Player p)
+        {
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"*You are a {p.Role}, your stats haven updated" +
+                $"and a {p.Inventory.Peek().Name} has been added to your inventory.");
+            Console.ForegroundColor = ConsoleColor.Gray;
+        }
+
         // Outputs to user and returns a role -- could be in another method
         public Role RolePicker()
         {
@@ -16,7 +24,8 @@ namespace GuarProject
 
         // This is not advisable
         Found:
-            Console.Write("Type your role: ");
+            Console.Write("... You find you still have your trusty weapon in your " +
+                "bag... what is your role?");
             roleString = Console.ReadLine().ToLower();
 
             switch (roleString)
@@ -59,6 +68,10 @@ namespace GuarProject
             Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.Gray;
         }
+
+        // Accepts a filename and outputs wanted text, Act1Description1
+        public Action<string> Act1Description1
+            = filename => Console.WriteLine(File.ReadAllText(filename));
 
         // Accepts a filename and outputs wanted text, BackStory1
         public Action<string> BackStory_1
