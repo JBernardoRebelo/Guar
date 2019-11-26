@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 
@@ -9,14 +10,34 @@ namespace GuarProject
     {
         private Render rnd = new Render();
         private GameState GmState;
+        private string[] validExplorationOptions;
+        private string[] validBattleOptions;
         private readonly string fileBackS1 = "BackStory_1.txt";
         private readonly string cmdCheatSheet = "CommandCheatSheet.txt";
 
         public void Start()
         {
+            // Player
             Player p;
             Role r;
             Stack<IItem> inv = new Stack<IItem>();
+
+            // Player options Explore
+            validExplorationOptions = new string[]
+            {
+                "cheatsheet", "check inventory",
+                "check stats", "attack",
+                "pick up", "persuade",
+                "Pick Pocket"
+            };
+
+            // Player options Battle
+            validBattleOptions = new string[]
+            {
+                "sword swing", "stab",
+                "persuade", "spell",
+                "run", "sneak"
+            };
 
             // Game state is explore
             GmState = GameState.Explore;
@@ -36,30 +57,36 @@ namespace GuarProject
 
         private void GameLoop(Player p, GameState gamestate)
         {
-            // Do stuff
-            rnd.PrintStats(p);
+            string option;
 
-            // Rnd.Update
             rnd.UpdatePlayer1(p);
 
             // Description 2
             rnd.Act1Description1("Act1_Description1.txt");
 
-            // Debug****
+            // Exploration mode 1
+            do
+            {
+                // Display
+                rnd.DisplayGameMode(gamestate);
 
-            p.UpdateMaxEnergy(p);
-            Console.WriteLine(p.Energy);
+                option = rnd.Option();
 
-            p.LevelUp(2, 3, 4, 2, 3, 4);
+                while (!validExplorationOptions.Any(x => x.Contains(option)))
+                {
+                    rnd.InvalidOption();
+                    option = rnd.Option();
+                }
 
-            rnd.PrintStats(p);
-            // *****************
+                ExecuteActionsExp(p, option);
+
+            } while (gamestate == GameState.Explore);
         }
 
         // Checks game state, calls according gameloops
         private void StateCheck(GameState s)
         {
-            if(s == GameState.Explore)
+            if (s == GameState.Explore)
             {
                 // Accepts current act progress
             }
@@ -70,13 +97,22 @@ namespace GuarProject
             }
         }
 
-        private void ExecuteActions(Player p, string action)
+        private void ExecuteActionsExp(Player p, string action)
         {
             // Call cheatSheet
+            if (action == validExplorationOptions[0])
+                rnd.CmdCheatSheet("CommandCheatSheet.txt");
 
             // Show inventory
 
+            // Check stats
+            if (action == validExplorationOptions[2])
+                rnd.PrintStats(p);
+
+            // Go to (place)
+
             // Attack (engage)
+            // Change game state
 
             // Pick up item (item name)
 
@@ -85,7 +121,7 @@ namespace GuarProject
             // PickPocket (npc name)
         }
 
-        private void ExecuteActionsBattle (Player p, string action)
+        private void ExecuteActionsBattle(Player p, string action)
         {
             // Sword swing
 

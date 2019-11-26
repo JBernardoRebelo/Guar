@@ -38,13 +38,13 @@ namespace GuarProject
             Stealth += stealth;
             Magicka += magicka;
             Lvl++;
+
+            // Update max health and energy
+            UpdateMaxHealh(this);
+            UpdateMaxEnergy(this);
         }
 
         // Player actions
-
-        // Update max HP and Energy
-        public Action<Player> UpdateMaxHealh = p => p.HP = p.Health * 10;
-        public Func<Player, int> UpdateMaxEnergy = p => p.Energy = p.Magicka * 10;
 
         // Methods to assign stat changes
         public void UpdateStatsRole(Role role)
@@ -62,6 +62,10 @@ namespace GuarProject
                 Stealth = 1;
                 Magicka = 1;
 
+                // Update max health and energy
+                UpdateMaxHealh(this);
+                UpdateMaxEnergy(this);
+
                 weapon = new HeavySword();
                 Inventory.Push(weapon);
             }
@@ -73,6 +77,10 @@ namespace GuarProject
                 Speech = 2;
                 Stealth = 6;
                 Magicka = 1;
+
+                // Update max health and energy
+                UpdateMaxHealh(this);
+                UpdateMaxEnergy(this);
 
                 weapon = new Dagger();
                 Inventory.Push(weapon);
@@ -86,6 +94,10 @@ namespace GuarProject
                 Stealth = 3;
                 Magicka = 1;
 
+                // Update max health and energy
+                UpdateMaxHealh(this);
+                UpdateMaxEnergy(this);
+
                 weapon = new Dagger();
                 Inventory.Push(weapon);
             }
@@ -98,9 +110,17 @@ namespace GuarProject
                 Stealth = 2;
                 Magicka = 6;
 
+                // Update max health and energy
+                UpdateMaxHealh(this);
+                UpdateMaxEnergy(this);
+
                 weapon = new Staff();
                 Inventory.Push(weapon);
             }
         }
+
+        // Update max HP and Energy
+        private Action<Player> UpdateMaxHealh = p => p.HP = p.Health * 10;
+        private Action<Player> UpdateMaxEnergy = p => p.Energy = p.Magicka * 10;
     }
 }
