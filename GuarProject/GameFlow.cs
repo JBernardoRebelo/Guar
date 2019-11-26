@@ -20,15 +20,14 @@ namespace GuarProject
             // Player
             Player p;
             Role r;
-            Stack<IItem> inv = new Stack<IItem>();
 
             // Player options Explore
             validExplorationOptions = new string[]
             {
                 "cheatsheet", "check inventory",
-                "check stats", "attack",
-                "pick up", "persuade",
-                "Pick Pocket"
+                "check stats", "go to", "attack",
+                "look around", "pick up", "persuade",
+                "persuade", "pick pocket", "quit game"
             };
 
             // Player options Battle
@@ -36,7 +35,7 @@ namespace GuarProject
             {
                 "sword swing", "stab",
                 "persuade", "spell",
-                "run", "sneak"
+                "run", "sneak", "quit game"
             };
 
             // Game state is explore
@@ -55,9 +54,16 @@ namespace GuarProject
             GameLoop(p, GmState);
         }
 
+        // Act 1 gameloop
         private void GameLoop(Player p, GameState gamestate)
         {
             string option;
+            IItem redGem = new RedGem();
+
+            List<IItem> inWorld = new List<IItem>();
+
+            // Add items in world
+            inWorld.Add(redGem);
 
             rnd.UpdatePlayer1(p);
 
@@ -79,7 +85,7 @@ namespace GuarProject
                     option = rnd.Option();
                 }
 
-                ExecuteActionsExp(p, option);
+                ExecuteActionsExp(p, option, inWorld);
 
             } while (gamestate == GameState.Explore);
         }
@@ -98,7 +104,8 @@ namespace GuarProject
             }
         }
 
-        private void ExecuteActionsExp(Player p, string action)
+        private void ExecuteActionsExp
+            (Player p, string action, List<IItem> inWorld)
         {
             // Call cheatSheet
             if (action == validExplorationOptions[0])
@@ -113,15 +120,26 @@ namespace GuarProject
                 rnd.PrintStats(p);
 
             // Go to (place)
+            // void TravelTo(place)
 
             // Attack (engage)
             // Change game state
 
-            // Pick up item (item name)
+            // Look around
+            if (action == validExplorationOptions[5])
+                rnd.LookAround(inWorld);
+
+            // Pick up item
+            if (action == validExplorationOptions[6])
+                p.PickupItem(inWorld);
 
             // Persuade (npc name)
 
             // PickPocket (npc name)
+
+            // Quit game
+            if (action == validExplorationOptions[10])
+                rnd.QuitGame();
         }
 
         private void ExecuteActionsBattle(Player p, string action)
