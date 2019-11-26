@@ -32,12 +32,20 @@ namespace GuarProject
         // Outputs all items in world
         public void LookAround(List<IItem> inWorld)
         {
-            Console.WriteLine($"\nYou look around, and scattered on " +
-                $"the ground you find a... ");
-            foreach (IItem i in inWorld)
+            if (inWorld.Count > 0)
             {
-                Console.WriteLine($" -> {i.Name}");
-                i.Found = true;
+                Console.WriteLine($"\nYou look around, and scattered on " +
+                     $"the ground you find a... ");
+                foreach (IItem i in inWorld)
+                {
+                    Console.WriteLine($" -> {i.Name}");
+                    i.Found = true;
+                }
+            }
+            else
+            {
+                // Generic description
+                Console.WriteLine("You look at the hills and the sky...");
             }
         }
 
@@ -80,17 +88,51 @@ namespace GuarProject
             return role;
         }
 
-        // Print Inventory
+        // Print Inventory -- returns true if are decoratables
         public void DisplayInventory(Player p)
         {
+            bool decoratables = false;
+            string choice;
+
+            WeaponDecorator wd;
+
             Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine("\n----- INVENTORY -----");
             foreach (IItem i in p.Inventory)
             {
-                Console.WriteLine($" -> {i.Name}");
+                Console.Write($" -> {i.Name}");
+
+                if (i is WeaponDecorator)
+                {
+                    wd = i as WeaponDecorator;
+
+                    if (!wd.Decorated)
+                    {
+                        Console.WriteLine($" -> This item can be" +
+                            $" merged with your weapon...");
+                        decoratables = true;
+                    }
+                }
             }
-            Console.WriteLine("----- --------- -----\n");
+            Console.WriteLine("\n----- --------- -----\n");
             Console.ForegroundColor = ConsoleColor.Gray;
+
+            // If there are decoratables output merge choice
+            if (decoratables)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine("...Do you wan't to?");
+                Console.ForegroundColor = ConsoleColor.Gray;
+
+                Console.Write("-> ");
+                choice = Console.ReadLine();
+
+                // Call merge method
+                if (choice == "yes" || choice == "y")
+                {
+                    p.DecorateWeapon(p.Inventory);
+                }
+            }
         }
 
         // Accepts Player, prints all stats onscreen

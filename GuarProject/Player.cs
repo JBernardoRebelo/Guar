@@ -62,11 +62,33 @@ namespace GuarProject
                     Render.UpdateItemFeed(this);
                 }
             }
+
+            // Remove item from world
+            foreach (IItem i in inWorld)
+            {
+                if (Inventory.Contains(i))
+                {
+                    inWorld.Remove(i);
+                    break;
+                }
+            }
         }
 
         // Persuade
 
         // Pick pocket
+
+        // Decorate weapon
+        public void DecorateWeapon(Stack<IItem> inv)
+        {
+            // Add combination weapon to inv and remove other items
+            foreach (IItem i in inv)
+            {
+               
+            }
+
+            Console.WriteLine("Your weapon has been decorated");
+        }
 
         // Methods to assign stat changes
         public void UpdateStatsRole(Role role)

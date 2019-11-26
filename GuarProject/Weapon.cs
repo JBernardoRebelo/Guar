@@ -11,13 +11,12 @@ namespace GuarProject
         public abstract string Name { get; }
         public abstract int Damage { get; set; }
         public abstract int MagicDamage { get; set; }
-        public abstract bool Decorated { get; set; }
         public bool Found { get; set; }
     }
 
     public abstract class WeaponDecorator : Weapon
     {
-
+        public abstract bool Decorated { get; set; }
     }
 
     public class RedGem : WeaponDecorator
@@ -49,6 +48,7 @@ namespace GuarProject
             Name = "Fire " + weapon.Name;
             Damage = weapon.Damage;
             MagicDamage += weapon.MagicDamage;
+            Decorated = true;
         }
     }
 
@@ -60,14 +60,12 @@ namespace GuarProject
         public override string Name { get => "Heavy Sword"; }
         public override int Damage { get; set; }
         public override int MagicDamage { get; set; }
-        public override bool Decorated { get; set; }
 
         // Stats for weapons depend on level in wich they are aquired
         public HeavySword(Player p)
         {
             Damage = (p.Strength + p.Health) * 2;
             MagicDamage = 0;
-            Decorated = false;
             Found = true;
         }
     }
@@ -80,14 +78,12 @@ namespace GuarProject
         public override string Name { get => "Dagger"; }
         public override int Damage { get; set; }
         public override int MagicDamage { get; set; }
-        public override bool Decorated { get; set; }
 
         // Stats for weapons depend on level in wich they are aquired
         public Dagger(Player p)
         {
             Damage = p.Accuracy + p.Stealth;
             MagicDamage = 0;
-            Decorated = false;
             Found = true;
         }
     }
@@ -100,14 +96,12 @@ namespace GuarProject
         public override string Name { get => "Staff"; }
         public override int Damage { get; set; }
         public override int MagicDamage { get; set; }
-        public override bool Decorated { get; set; }
 
         // Stats for weapons depend on level in wich they are aquired
         public Staff(Player p)
         {
             Damage = 0;
             MagicDamage = p.Energy / 2 - (p.Strength * 2) - p.Health;
-            Decorated = false;
             Found = true;
         }
     }
