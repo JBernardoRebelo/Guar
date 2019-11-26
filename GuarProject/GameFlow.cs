@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Collections.Generic;
 using System.Text;
 
@@ -32,6 +33,16 @@ namespace GuarProject
         {
             // Do stuff
             rnd.PrintStats(p);
+
+            // Debug****
+
+            p.UpdateMaxEnergy(p);
+            Console.WriteLine(p.Energy);
+
+            p.LevelUp(2, 3, 4, 2, 3, 4);
+
+            rnd.PrintStats(p);
+            // *****************
         }
     }
 }

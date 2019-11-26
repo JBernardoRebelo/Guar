@@ -32,6 +32,10 @@ namespace GuarProject
                     role = Role.Swindler;
                     break;
 
+                case "wizard":
+                    role = Role.Wizard;
+                    break;
+
                 default:
                     Console.WriteLine("Your role is invalid, try again");
                     goto Found;
@@ -53,7 +57,7 @@ namespace GuarProject
             Console.WriteLine($"Magicka: {p.Magicka}");
             Console.WriteLine("----- ---- ----- -----");
             Console.WriteLine();
-            Console.ForegroundColor = default;
+            Console.ForegroundColor = ConsoleColor.Gray;
         }
 
         // Accepts a filename and outputs wanted text, BackStory1
