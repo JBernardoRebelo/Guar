@@ -2,7 +2,6 @@
 using System.IO;
 using System.Threading;
 using System.Collections.Generic;
-using System.Text;
 
 namespace GuarProject
 {
@@ -10,11 +9,11 @@ namespace GuarProject
     {
         private StreamReader file;
 
-        public void UpdatePlayer1(Player p)
+        // Output item pick up message
+        public static void UpdateItemFeed(Player p)
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine($"-> You are a {p.Role}, your stats have been" +
-                $" updated and a {p.Inventory.Peek().Name}" +
+            Console.WriteLine($"->{p.Inventory.Peek().Name}" +
                 $" has been added to your inventory.\n");
             Console.ForegroundColor = ConsoleColor.Gray;
         }
@@ -30,10 +29,16 @@ namespace GuarProject
             return option;
         }
 
-        // Generic Invalid option message
-        public void InvalidOption()
+        // Outputs all items in world
+        public void LookAround(List<IItem> inWorld)
         {
-            Console.WriteLine("You can't do that!");
+            Console.WriteLine($"\nYou look around, and scattered on " +
+                $"the ground you find a... ");
+            foreach (IItem i in inWorld)
+            {
+                Console.WriteLine($" -> {i.Name}");
+                i.Found = true;
+            }
         }
 
         // Outputs to user and returns a role -- could be in another method
@@ -46,8 +51,8 @@ namespace GuarProject
 
         // This is not advisable
         Found:
-            Console.WriteLine("... You find you still have your trusty weapon" +
-                " in your bag... what is your role?...");
+            Console.WriteLine("\n... You find you still have your trusty weapon" +
+                " in your bag... what is your role?...\n");
             Console.Write("-> ");
             roleString = Console.ReadLine().ToLower();
 
@@ -111,6 +116,19 @@ namespace GuarProject
             Console.ForegroundColor = ConsoleColor.Gray;
         }
 
+        // First update player
+        public void UpdatePlayer1(Player p)
+        {
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"-> You are a {p.Role}, your stats have been" +
+                $" updated and a {p.Inventory.Peek().Name}" +
+                $" has been added to your inventory.\n");
+            Console.ForegroundColor = ConsoleColor.Gray;
+        }
+
+        // Generic Invalid option message
+        public void InvalidOption() => Console.WriteLine("You can't do that!");
+
         // Accepts a filename and outputs wanted text, Act1Description1
         public void Act1Description1(string filename)
         {
@@ -137,8 +155,22 @@ namespace GuarProject
             }
         }
 
-        public Action<GameState> DisplayGameMode
-            = gameMode => Console.WriteLine($"\n~~~~~~ {gameMode} Mode ~~~~~~\n");
+        // Quit game
+        public void QuitGame()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Guar sees you soon!");
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Environment.Exit(0);
+        }
+
+        // Displays game state
+        public void DisplayGameMode(GameState g)
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"\n~~~~~~ {g} Mode ~~~~~~\n");
+            Console.ForegroundColor = ConsoleColor.Gray;
+        }
 
         // Accepts a filename and outputs cheat sheet, Cheat sheet
         public Action<string> CmdCheatSheet

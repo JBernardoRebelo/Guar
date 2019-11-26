@@ -46,11 +46,33 @@ namespace GuarProject
 
         // Player actions
 
+        // Attack
+        public void Attack()
+        {
+        }
+
+        // Pick up
+        public void PickupItem(List<IItem> inWorld)
+        {
+            foreach (IItem i in inWorld)
+            {
+                if (i.Found)
+                {
+                    Inventory.Push(i);
+                    Render.UpdateItemFeed(this);
+                }
+            }
+        }
+
+        // Persuade
+
+        // Pick pocket
+
         // Methods to assign stat changes
         public void UpdateStatsRole(Role role)
         {
             // Starter weapon
-            IItem weapon;
+            Weapon weapon;
 
             // Assign role stats // Add weapon
             if (role == Role.Paladin)
@@ -66,7 +88,7 @@ namespace GuarProject
                 UpdateMaxHealh(this);
                 UpdateMaxEnergy(this);
 
-                weapon = new HeavySword();
+                weapon = new HeavySword(this);
                 Inventory.Push(weapon);
             }
             else if (role == Role.Assassin)
@@ -82,7 +104,7 @@ namespace GuarProject
                 UpdateMaxHealh(this);
                 UpdateMaxEnergy(this);
 
-                weapon = new Dagger();
+                weapon = new Dagger(this);
                 Inventory.Push(weapon);
             }
             else if (role == Role.Swindler)
@@ -98,7 +120,7 @@ namespace GuarProject
                 UpdateMaxHealh(this);
                 UpdateMaxEnergy(this);
 
-                weapon = new Dagger();
+                weapon = new Dagger(this);
                 Inventory.Push(weapon);
             }
             else if (role == Role.Wizard)
@@ -114,7 +136,7 @@ namespace GuarProject
                 UpdateMaxHealh(this);
                 UpdateMaxEnergy(this);
 
-                weapon = new Staff();
+                weapon = new Staff(this);
                 Inventory.Push(weapon);
             }
         }
