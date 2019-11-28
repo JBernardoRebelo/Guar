@@ -79,21 +79,19 @@ namespace GuarProject
         // Pick pocket
 
         // Decorate weapon
-        public void DecorateWeapon(Weapon weapon, Weapon wpnDecorator)
+        public void DecorateWeapon(WeaponDecorator wpnDecorator, Weapon weapon)
         {
             Weapon newWeapon;
 
-            if(wpnDecorator is RedGem || weapon is RedGem)
+            if (wpnDecorator is RedGem)
             {
                 // Decorate fire weapon
                 newWeapon = new RedGem(weapon);
                 Inventory.Push(newWeapon);
                 Render.UpdateItemFeed(this);
             }
-
             // Other decorations
 
-            Console.WriteLine("Your weapon has been decorated");
         }
 
         // Methods to assign stat changes
@@ -165,6 +163,22 @@ namespace GuarProject
                 UpdateMaxEnergy(this);
 
                 weapon = new Staff(this);
+                Inventory.Push(weapon);
+            }
+            else if(role == Role.Hobo)
+            {
+                Strength = 1;
+                Health = 2;
+                Accuracy = 2;
+                Speech = 1;
+                Stealth = 1;
+                Magicka = 1;
+
+                // Update max health and energy
+                UpdateMaxHealh(this);
+                UpdateMaxEnergy(this);
+
+                weapon = new Stick(this);
                 Inventory.Push(weapon);
             }
         }

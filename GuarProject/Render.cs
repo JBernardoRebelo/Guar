@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GuarProject
 {
@@ -13,7 +14,7 @@ namespace GuarProject
         public static void UpdateItemFeed(Player p)
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine($"->{p.Inventory.Peek().Name}" +
+            Console.WriteLine($"-> {p.Inventory.Peek().Name}" +
                 $" has been added to your inventory.\n");
             Console.ForegroundColor = ConsoleColor.Gray;
         }
@@ -52,48 +53,182 @@ namespace GuarProject
         // Outputs to user and returns a role -- could be in another method
         public Role RolePicker()
         {
-            Role role;
             string roleString;
+
+            // Paladin roles
+            string[] paladinRoles =
+                new string[] { "paladin", "fighter", "tank" };
+
+            // Assissin roles
+            string[] assassinRoles =
+                new string[] { "assassin", "rogue", "butcher" };
+
+            // Wizard roles
+            string[] wizardRoles =
+                new string[] { "wizard", "mage" };
+
+            // Swindler
+            string[] swindlerRoles =
+                 new string[] { "swindler", "thief" };
 
             Thread.Sleep(2000);
 
-        // This is not advisable
-        Found:
             Console.WriteLine("\n... You find you still have your trusty weapon" +
                 " in your bag... what is your role?...\n");
             Console.Write("-> ");
+
+
             roleString = Console.ReadLine().ToLower();
 
-            switch (roleString)
+            if (paladinRoles.Contains(roleString))
             {
-                case "paladin":
-                    role = Role.Paladin;
-                    break;
-                case "assassin":
-                    role = Role.Assassin;
-                    break;
-
-                case "swindler":
-                    role = Role.Swindler;
-                    break;
-
-                case "wizard":
-                    role = Role.Wizard;
-                    break;
-
-                default:
-                    Console.WriteLine("Your role is invalid, try again");
-                    goto Found;
+                return Role.Paladin;
             }
-            return role;
+            else if (assassinRoles.Contains(roleString))
+            {
+                return Role.Assassin;
+            }
+            else if (swindlerRoles.Contains(roleString))
+            {
+                return Role.Swindler;
+            }
+            else if (wizardRoles.Contains(roleString))
+            {
+                return Role.Wizard;
+            }
+            else
+            {
+                return Role.Hobo;
+            }
         }
 
         // Print Inventory -- returns true if are decoratables
-        public void DisplayInventory(Player p)
+        public void InventoryInteractions(Player p)
         {
-            bool decoratables = false;
             string choice;
+            string invAction;
+            string action;
+            string itemName;
 
+            // Display inventory items
+            ShowInventoryItems(p);
+            Console.Write("-> ");
+            invAction = Console.ReadLine().ToLower();
+
+            // Close inventory
+            if (invAction == "close")
+            {
+                Console.WriteLine("You closed the inventory");
+            }
+            else
+            {
+                try
+                {
+                    string[] split = invAction.Split(' ');
+
+                    // Assign action in inventory and item name
+                    action = split[0];
+                    itemName = split[1];
+                    for (int i = 2; i < split.Length; i++)
+                    {
+                        itemName += split[i];
+                    }
+
+
+                    Console.WriteLine("\n****************************");
+                    Console.WriteLine("Action: " + action);
+                    Console.WriteLine("Item name: " + itemName);
+                    Console.WriteLine("****************************\n");
+
+                    if (action == "merge")
+                    {
+                        foreach (IItem i in p.Inventory)
+                        {
+                            if (itemName == i.inEngineName
+                                && i is WeaponDecorator)
+                            {
+                                WeaponDecorator wd = i as WeaponDecorator;
+
+                                // Select the weapon decorator
+                                Console.WriteLine("Whats the weapon you" +
+                                    " want to enpower?");
+                                Console.Write("-> ");
+                                choice = Console.ReadLine();
+                                string[] split2 = choice.Split(' ');
+                                choice = split2[0];
+                                for (int k = 1; k < split2.Length; k++)
+                                {
+                                    choice += split2[k];
+                                }
+
+                                Console.WriteLine(choice);
+
+                                foreach (IItem j in p.Inventory)
+                                {
+                                    if (choice == j.inEngineName
+                                        && j is Weapon)
+                                    {
+                                        Weapon w = j as Weapon;
+
+                                        // Call decoration method
+                                        p.DecorateWeapon(wd, w);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine($"You can't use " +
+                                    $"the {itemName} for that!");
+                            }
+                        }
+                    }
+                    else if (action == "stats")
+                    {
+                        foreach (IItem i in p.Inventory)
+                        {
+                            if (itemName == i.inEngineName)
+                            {
+                                ShowItemStats(i);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("That is not a valid option");
+                    }
+                }
+                catch (Exception e)
+                {
+                    action = "invalid input";
+                    itemName = action;
+
+                    Console.WriteLine("The Inventory does not " +
+                        "recognize those words\n");
+                    Console.WriteLine(e);
+                }
+            }
+        }
+
+        // Accepts an IItem prints stats onscreen
+        private void ShowItemStats(IItem i)
+        {
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine($"{i.Name} Stats:");
+            Console.WriteLine($"    Value: {i.Value}");
+            Console.WriteLine($"    Weight: {i.Weight}\n");
+
+            if (i is Weapon)
+            {
+                Weapon w = i as Weapon;
+                Console.WriteLine($"    Damage: {w.Damage}");
+                Console.WriteLine($"    Magic Damage: {w.MagicDamage}\n");
+            }
+            Console.ForegroundColor = ConsoleColor.Gray;
+        }
+
+        // Show inventory
+        private void ShowInventoryItems(Player p)
+        {
             WeaponDecorator wd;
 
             Console.ForegroundColor = ConsoleColor.DarkYellow;
@@ -110,96 +245,11 @@ namespace GuarProject
                     {
                         Console.WriteLine($" -> This item can be" +
                             $" merged with your weapon...");
-                        decoratables = true;
                     }
                 }
             }
             Console.WriteLine("\n----- --------- -----\n");
             Console.ForegroundColor = ConsoleColor.Gray;
-
-            // If there are decoratables output merge choice
-            if (decoratables)
-            {
-                Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.WriteLine("...Do you wan't to merge?");
-                Console.ForegroundColor = ConsoleColor.Gray;
-
-                Console.Write("-> ");
-                choice = Console.ReadLine();
-
-                // Call merge method
-                if (choice == "yes" || choice == "y")
-                {
-                    MergeWeaponChoice(p);
-                }
-            }
-        }
-
-        public void MergeWeaponChoice(Player p)
-        {
-            string item1 = default;
-            string item2 = default;
-            List<string> itemNames = new List<string>();
-            Weapon Dec1 = default;
-            Weapon Dec2 = default;
-
-        Found1:
-            Console.WriteLine($"The Item you want to merge");
-            Console.Write($"-> ");
-            item1 = Console.ReadLine();
-
-        Found2:
-            Console.WriteLine($"The 2nd Item you want to merge");
-            Console.Write($"-> ");
-            item2 = Console.ReadLine();
-
-            //foreach (IItem i in p.Inventory)
-            //{
-            //    itemNames.Add(i.Name);
-            //}
-
-            //// While the user's choice is not on the list ask
-            //if (!itemNames.Contains(item1))
-            //{
-            //    Console.WriteLine($"The Item you want to merge");
-            //    Console.Write($"-> ");
-            //    item1 = Console.ReadLine();
-            //}
-
-            //// While the user's choice is not on the list ask
-            //while (!itemNames.Contains(item2))
-            //{
-            //    Console.WriteLine($"The 2nd Item you want to merge");
-            //    Console.Write($"-> ");
-            //    item2 = Console.ReadLine();
-            //}
-
-            foreach (IItem i in p.Inventory)
-            {
-                if (item1 == i.Name && i is Weapon)
-                {
-                    Dec1 = i as Weapon;
-                }
-                //else
-                //{
-                //    Console.WriteLine($"{item1} is not is not a valid item!");
-                //    goto Found1;
-                //}
-
-                if (item2 == i.Name && i is Weapon)
-                {
-                    Dec2 = i as Weapon;
-                }
-                //else
-                //{
-                //    Console.WriteLine($"{item2} is not is " +
-                //        $"not a valid item!");
-                //    goto Found2;
-                //}
-            }
-
-            // Call player merge decorator
-            p.DecorateWeapon(Dec1, Dec2);
         }
 
         // Accepts Player, prints all stats onscreen

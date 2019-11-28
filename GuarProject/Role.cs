@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GuarProject
+﻿namespace GuarProject
 {
     // Has all possible roles
     public enum Role
@@ -10,6 +6,7 @@ namespace GuarProject
         Paladin,
         Assassin,
         Swindler,
-        Wizard
+        Wizard,
+        Hobo
     }
 }
