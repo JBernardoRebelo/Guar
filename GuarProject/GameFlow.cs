@@ -24,8 +24,8 @@ namespace GuarProject
             // Player options Explore
             validExplorationOptions = new string[]
             {
-                "cheatsheet", "check inventory",
-                "check stats", "go to", "attack",
+                "cheatsheet", "inventory",
+                "stats", "go to", "attack",
                 "look around", "pick up", "persuade",
                 "persuade", "pick pocket", "quit game"
             };
@@ -42,7 +42,7 @@ namespace GuarProject
             GmState = GameState.Explore;
 
             // Get file for backstory
-            rnd.BackStory_1(fileBackS1);
+            //rnd.BackStory_1(fileBackS1);
 
             // Hello player, pick role
             r = rnd.RolePicker();
@@ -114,7 +114,7 @@ namespace GuarProject
 
             // Show inventory
             if (action == validExplorationOptions[1])
-                rnd.DisplayInventory(p);
+                rnd.InventoryInteractions(p);
 
             // Check stats
             if (action == validExplorationOptions[2])
