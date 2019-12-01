@@ -4,13 +4,21 @@ using System.Text;
 
 namespace GuarProject
 {
-    public class Enemy : IEntity
+    public abstract class AbstractEnemy : IEntity, IAttackBehaviour
     {
-        public int Health { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public int Damage { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public int Perception { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public int ID { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public int Intelligence { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public int Energy { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public abstract int Health { get; set; }
+        public abstract int Damage { get; set; }
+        public abstract int Perception { get; set; }
+        public abstract int ID { get; set; }
+        public abstract int Intelligence { get; set; }
+        public abstract  int Energy { get; set; }
+        public virtual Weapon Weapon { get; set; }
+
+        // Generic attack to be overriden
+        public virtual void Attack(Player p)
+        {
+            // Generic attack
+            p.HP -= Weapon.Damage;
+        }
     }
 }
