@@ -14,7 +14,7 @@ namespace GuarProject
         public static void UpdateItemFeed(Player p)
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine($"-> {p.Inventory.Peek().Name}" +
+            Console.WriteLine($"\n** {p.Inventory.Peek().Name}" +
                 $" has been added to your inventory.\n");
             Console.ForegroundColor = ConsoleColor.Gray;
         }
@@ -24,24 +24,26 @@ namespace GuarProject
         {
             string option;
 
-            Console.WriteLine("What do you do?...");
+            //Console.WriteLine("What do you do?...");
             Console.Write("-> ");
             option = Console.ReadLine().ToLower();
             return option;
         }
 
         // Outputs all items in world
-        public void LookAround(List<IItem> inWorld)
+        public void LookAround(ICollection<IItem> inWorld)
         {
             if (inWorld.Count > 0)
             {
                 Console.WriteLine($"\nYou look around, and scattered on " +
-                     $"the ground you find a... ");
+                     $"the ground you find... ");
+                Console.ForegroundColor = ConsoleColor.Yellow;
                 foreach (IItem i in inWorld)
                 {
-                    Console.WriteLine($" -> {i.Name}");
+                    Console.WriteLine($" -- {i.Name}");
                     i.Found = true;
                 }
+                Console.ForegroundColor = ConsoleColor.Gray;
             }
             else
             {
@@ -112,7 +114,6 @@ namespace GuarProject
 
             // Display inventory items
             ShowInventoryItems(p);
-            Console.Write("-> ");
             invAction = Console.ReadLine().ToLower();
 
             // Close inventory
@@ -134,11 +135,10 @@ namespace GuarProject
                         itemName += split[i];
                     }
 
-
-                    Console.WriteLine("\n****************************");
-                    Console.WriteLine("Action: " + action);
-                    Console.WriteLine("Item name: " + itemName);
-                    Console.WriteLine("****************************\n");
+                    //Console.WriteLine("\n****************************");
+                    //Console.WriteLine("Action: " + action);
+                    //Console.WriteLine("Item name: " + itemName);
+                    //Console.WriteLine("****************************\n");
 
                     if (action == "merge")
                     {
@@ -213,7 +213,7 @@ namespace GuarProject
         private void ShowItemStats(IItem i)
         {
             Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Console.WriteLine($"{i.Name} Stats:");
+            Console.WriteLine($"\n{i.Name} Stats:");
             Console.WriteLine($"    Value: {i.Value}");
             Console.WriteLine($"    Weight: {i.Weight}\n");
 
@@ -230,6 +230,8 @@ namespace GuarProject
         private void ShowInventoryItems(Player p)
         {
             WeaponDecorator wd;
+            int weight = 0;
+            int maxweight = p.CarryWeight;
 
             Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine("\n----- INVENTORY -----");
@@ -237,18 +239,21 @@ namespace GuarProject
             {
                 Console.Write($" -> {i.Name}");
 
+                weight += i.Weight;
+
                 if (i is WeaponDecorator)
                 {
                     wd = i as WeaponDecorator;
 
-                    if (!wd.Decorated)
+                    if (wd.Decorated == false)
                     {
-                        Console.WriteLine($" -> This item can be" +
-                            $" merged with your weapon...");
+                        Console.WriteLine($" *");
                     }
                 }
             }
+            Console.WriteLine($"\nCarrying: {weight} of {maxweight}"); 
             Console.WriteLine("\n----- --------- -----\n");
+            Console.Write("-> ");
             Console.ForegroundColor = ConsoleColor.Gray;
         }
 
@@ -260,6 +265,7 @@ namespace GuarProject
             Console.WriteLine("----- YOUR STATS -----");
             Console.WriteLine($"Level: {p.Lvl}");
             Console.WriteLine($"Role: {p.Role}");
+            Console.WriteLine($"Area: {p.Area.Name}");
             Console.WriteLine();
             Console.WriteLine($"Strength: {p.Strength}");
             Console.WriteLine($"Health: {p.Health}");
@@ -275,7 +281,10 @@ namespace GuarProject
             Console.ForegroundColor = ConsoleColor.Gray;
         }
 
-        // First update player
+        /// <summary>
+        /// First update, role and stats
+        /// </summary>
+        /// <param name="p"> Accepts a player </param>
         public void UpdatePlayer1(Player p)
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
@@ -323,6 +332,18 @@ namespace GuarProject
             Environment.Exit(0);
         }
 
+        // No npcs around
+        public void NoNpcsHere()
+        {
+            Console.WriteLine("There is no one around...");
+        }
+
+        // No enemies
+        public void NoEnemiesHere()
+        {
+            Console.WriteLine("There is nothing to attack");
+        }
+
         // Displays game state
         public void DisplayGameMode(GameState g)
         {
@@ -330,6 +351,10 @@ namespace GuarProject
             Console.WriteLine($"\n~~~~~~ {g} Mode ~~~~~~\n");
             Console.ForegroundColor = ConsoleColor.Gray;
         }
+
+        // Display no items to pick up message
+        public static Action<string> NoItemToPickUp 
+            = item => Console.WriteLine("No items to pick up");
 
         // Accepts a filename and outputs cheat sheet, Cheat sheet
         public Action<string> CmdCheatSheet

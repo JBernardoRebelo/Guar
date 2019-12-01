@@ -51,28 +51,63 @@ namespace GuarProject
             p.UpdateStatsRole(p.Role);
 
             // Call game loop
-            GameLoop(p, GmState);
+            Loop(p, GmState);
         }
 
-        // Act 1 gameloop
-        private void GameLoop(Player p, GameState gamestate)
+        //// Act 1 gameloop
+        //private void GameLoop(Player p, GameState gamestate)
+        //{
+        //    string option;
+        //    IItem redGem = new RedGem();
+
+        //    List<IItem> inWorld = new List<IItem>();
+
+        //    // Add items in world
+        //    inWorld.Add(redGem);
+
+        //    rnd.UpdatePlayer1(p);
+
+        //    // Description 2
+        //    rnd.Act1Description1("Act1_Description1.txt");
+
+
+        //    // Display game state
+        //    rnd.DisplayGameMode(gamestate);
+
+        //    // Exploration mode 1
+        //    do
+        //    {
+        //        // Action option
+        //        option = rnd.Option();
+
+        //        while (!validExplorationOptions.Any(x => x.Contains(option)))
+        //        {
+        //            rnd.InvalidOption();
+        //            option = rnd.Option();
+        //        }
+
+        //        ExecuteActionsExp(p, option, inWorld);
+
+        //    } while (gamestate == GameState.Explore);
+        //}
+
+        // New area gameloop
+        public void Loop(Player p, GameState gameState)
         {
             string option;
-            IItem redGem = new RedGem();
 
-            List<IItem> inWorld = new List<IItem>();
+            // New area instance
+            AbstractArea area = new AreaStableRoad(p);
+            area.GameState = gameState;
 
-            // Add items in world
-            inWorld.Add(redGem);
-
+            // Show last item
             rnd.UpdatePlayer1(p);
 
             // Description 2
             rnd.Act1Description1("Act1_Description1.txt");
 
-
             // Display game state
-            rnd.DisplayGameMode(gamestate);
+            rnd.DisplayGameMode(area.GameState);
 
             // Exploration mode 1
             do
@@ -86,9 +121,9 @@ namespace GuarProject
                     option = rnd.Option();
                 }
 
-                ExecuteActionsExp(p, option, inWorld);
+                ExecuteActionsExp(p, option, area.Items);
 
-            } while (gamestate == GameState.Explore);
+            } while (area.GameState == GameState.Explore);
         }
 
         // Checks game state, calls according gameloops
@@ -106,7 +141,7 @@ namespace GuarProject
         }
 
         private void ExecuteActionsExp
-            (Player p, string action, List<IItem> inWorld)
+            (Player p, string action, ICollection<IItem> inWorld)
         {
             // Call cheatSheet
             if (action == validExplorationOptions[0])

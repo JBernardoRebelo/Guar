@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace GuarProject
 {
@@ -16,7 +16,9 @@ namespace GuarProject
         public int HP { get; set; } // HP is health * 10 
         public int Energy { get; set; } // Energy is Magicka * 10 
         public Role Role { get; private set; } // Player's role
+        public int CarryWeight { get; private set; } // Inventory max weight
         public Stack<IItem> Inventory { get; set; }
+        public AbstractArea Area { get; set; } // Player position
 
         // Player constructor, accepts a role
         public Player(Role role)
@@ -39,9 +41,10 @@ namespace GuarProject
             Magicka += magicka;
             Lvl++;
 
-            // Update max health and energy
+            // Update max health, energy and max weight
             UpdateMaxHealh(this);
             UpdateMaxEnergy(this);
+            UpdateMaxWeight(this);
         }
 
         // Player actions
@@ -52,7 +55,7 @@ namespace GuarProject
         }
 
         // Pick up
-        public void PickupItem(List<IItem> inWorld)
+        public void PickupItem(ICollection<IItem> inWorld)
         {
             foreach (IItem i in inWorld)
             {
@@ -60,6 +63,10 @@ namespace GuarProject
                 {
                     Inventory.Push(i);
                     Render.UpdateItemFeed(this);
+                }
+                else
+                {
+                    Render.NoItemToPickUp(i.Name);
                 }
             }
 
@@ -90,6 +97,18 @@ namespace GuarProject
                 Inventory.Push(newWeapon);
                 Render.UpdateItemFeed(this);
             }
+
+            foreach (Weapon w in Inventory)
+            {
+                if (w == wpnDecorator)
+                {
+
+                }
+                else if (w == weapon)
+                {
+                    Inventory.Pop();
+                }
+            }
             // Other decorations
 
         }
@@ -113,6 +132,7 @@ namespace GuarProject
                 // Update max health and energy
                 UpdateMaxHealh(this);
                 UpdateMaxEnergy(this);
+                UpdateMaxWeight(this);
 
                 weapon = new HeavySword(this);
                 Inventory.Push(weapon);
@@ -129,6 +149,7 @@ namespace GuarProject
                 // Update max health and energy
                 UpdateMaxHealh(this);
                 UpdateMaxEnergy(this);
+                UpdateMaxWeight(this);
 
                 weapon = new Dagger(this);
                 Inventory.Push(weapon);
@@ -145,6 +166,7 @@ namespace GuarProject
                 // Update max health and energy
                 UpdateMaxHealh(this);
                 UpdateMaxEnergy(this);
+                UpdateMaxWeight(this);
 
                 weapon = new Dagger(this);
                 Inventory.Push(weapon);
@@ -161,11 +183,12 @@ namespace GuarProject
                 // Update max health and energy
                 UpdateMaxHealh(this);
                 UpdateMaxEnergy(this);
+                UpdateMaxWeight(this);
 
                 weapon = new Staff(this);
                 Inventory.Push(weapon);
             }
-            else if(role == Role.Hobo)
+            else if (role == Role.Hobo)
             {
                 Strength = 1;
                 Health = 2;
@@ -177,6 +200,7 @@ namespace GuarProject
                 // Update max health and energy
                 UpdateMaxHealh(this);
                 UpdateMaxEnergy(this);
+                UpdateMaxWeight(this);
 
                 weapon = new Stick(this);
                 Inventory.Push(weapon);
@@ -185,6 +209,9 @@ namespace GuarProject
 
         // Update max HP and Energy
         private Action<Player> UpdateMaxHealh = p => p.HP = p.Health * 10;
-        private Action<Player> UpdateMaxEnergy = p => p.Energy = p.Magicka * 10;
+        private Action<Player> UpdateMaxEnergy = p => p.Energy
+            = p.Magicka * 10;
+        private Action<Player> UpdateMaxWeight = p => p.CarryWeight
+            = 30 + ((p.Strength * 10) - p.Stealth) / 2;
     }
 }

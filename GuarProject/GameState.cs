@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GuarProject
+﻿namespace GuarProject
 {
     // All possible game states
     public enum GameState

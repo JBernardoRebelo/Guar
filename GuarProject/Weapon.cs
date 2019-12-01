@@ -50,19 +50,19 @@ namespace GuarProject
         public RedGem(Weapon weapon)
         {
             Weight += weapon.Weight;
-            Value += (weapon.Value / 2) + Value;
+            Value += (weapon.Value / 2) + 30;
             Name = "Flamming " + weapon.Name;
             Damage = weapon.Damage;
-            MagicDamage += weapon.MagicDamage;
+            MagicDamage += weapon.MagicDamage + 10;
             Decorated = true;
-            inEngineName = Name.ToLower();
+            inEngineName = "flamming" + weapon.inEngineName;
         }
     }
 
     // Class heavy sword
     public class HeavySword : Weapon
     {
-        public override int Weight { get => 50; }
+        public override int Weight { get => 30; }
         public override int Value { get => 15; }
         public override string Name { get => "Heavy Sword"; }
         public override int Damage { get; set; }
@@ -119,8 +119,8 @@ namespace GuarProject
     // Class stick
     public class Stick : Weapon
     {
-        public override int Weight => 25;
-        public override int Value => 15;
+        public override int Weight => 5;
+        public override int Value => 1;
         public override string Name { get => "Broken Stick"; }
         public override int Damage { get; set; }
         public override int MagicDamage { get; set; }
