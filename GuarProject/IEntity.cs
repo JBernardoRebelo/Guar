@@ -12,5 +12,6 @@ namespace GuarProject
         int ID { get; set; }
         int Intelligence { get; set; }
         int Energy { get; set; }
+        Race Race { get;}
     }
 }

@@ -31,16 +31,26 @@ namespace GuarProject
         }
 
         // Outputs all items in world
-        public void LookAround(ICollection<IItem> inWorld)
+        public void LookAround(AbstractArea area)
         {
-            if (inWorld.Count > 0)
+            if (area.Enemies != null && area.Enemies.Count > 0)
             {
-                Console.WriteLine($"\nYou look around, and scattered on " +
-                     $"the ground you find... ");
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                foreach (IItem i in inWorld)
+                Console.WriteLine($"Enemies...");
+                Console.ForegroundColor = ConsoleColor.Red;
+                foreach (AbstractEnemy e in area.Enemies)
                 {
-                    Console.WriteLine($" -- {i.Name}");
+
+                    Console.WriteLine($" -* {e.Race.ToString()}");
+                }
+                Console.ForegroundColor = ConsoleColor.Gray;
+            }
+            if (area.Items != null && area.Items.Count > 0)
+            {
+                Console.WriteLine($"Items on ground...");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                foreach (IItem i in area.Items)
+                {
+                    Console.WriteLine($" -* {i.Name}");
                     i.Found = true;
                 }
                 Console.ForegroundColor = ConsoleColor.Gray;
@@ -48,7 +58,17 @@ namespace GuarProject
             else
             {
                 // Generic description
-                Console.WriteLine("You look at the hills and the sky...");
+                Console.WriteLine(area.Descritption);
+            }
+            if(area.Npcs != null && area.Npcs.Count > 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                foreach (AbstractEnemy e in area.Enemies)
+                {
+
+                    Console.WriteLine($" -- {e.Race.ToString()}");
+                }
+                Console.ForegroundColor = ConsoleColor.Gray;
             }
         }
 
@@ -251,7 +271,7 @@ namespace GuarProject
                     }
                 }
             }
-            Console.WriteLine($"\nCarrying: {weight} of {maxweight}"); 
+            Console.WriteLine($"\nCarrying: {weight} of {maxweight}");
             Console.WriteLine("\n----- --------- -----\n");
             Console.Write("-> ");
             Console.ForegroundColor = ConsoleColor.Gray;
@@ -353,7 +373,7 @@ namespace GuarProject
         }
 
         // Display no items to pick up message
-        public static Action<string> NoItemToPickUp 
+        public static Action<string> NoItemToPickUp
             = item => Console.WriteLine("No items to pick up");
 
         // Accepts a filename and outputs cheat sheet, Cheat sheet

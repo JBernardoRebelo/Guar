@@ -12,6 +12,7 @@ namespace GuarProject
         public override int ID { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public override int Intelligence { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public override int Energy { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public override Race Race { get => Race.Imp; }
         public override AttackBehaviour AttackBehaviour { get; set; }
 
         // Enemy constructor, initialize attack type
