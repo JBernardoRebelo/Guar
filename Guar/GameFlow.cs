@@ -59,7 +59,7 @@ namespace Guar
             string option;
 
             // Show Description of area
-            rnd.AreaDescritption(area.Descritption);
+            rnd.AreaDescription(area.Description);
 
             // Display game state
             rnd.DisplayGameMode(area.GameState);
@@ -78,7 +78,7 @@ namespace Guar
 
                 ExecuteActionsExp(p, option, area);
 
-            } while (area.GameState == GameState.Explore);
+            } while (area.GameState == GameState.Explore || option != "north" || option != "south" );
         }
 
         // Checks game state, calls according gameloops

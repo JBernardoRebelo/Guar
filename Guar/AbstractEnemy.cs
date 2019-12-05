@@ -21,5 +21,11 @@ namespace Guar
         {
             AttackBehaviour.Attack();
         }
+
+        // Detection
+        public virtual void Detection()
+        {
+            // Make something with this perception and player sneak
+        }
     }
 }

@@ -10,7 +10,7 @@ namespace Guar
         public override ICollection<AbstractEnemy> Enemies { get; set; }
         public override ICollection<IItem> Items { get; set; }
         public override GameState GameState { get; set; }
-        public override string Descritption => "DescriptionForest.txt";
+        public override string Description => "DescriptionForest.txt";
 
         public AreaForest(Player p)
         {

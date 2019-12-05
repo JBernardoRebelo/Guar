@@ -44,7 +44,7 @@ namespace Guar
         /// <summary>
         /// Description of area with filename
         /// </summary>
-        public abstract string Descritption { get; }
+        public abstract string Description { get; }
 
         // If player is in this area updates it
         public void UpdateArea(Player p)

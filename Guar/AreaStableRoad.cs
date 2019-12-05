@@ -7,7 +7,7 @@ namespace Guar
         public override string Name { get => "Stable Road"; }
         public override ICollection<IItem> Items { get; set; }
         public override GameState GameState { get; set; }
-        public override string Descritption => "DescriptionStable.txt";
+        public override string Description => "DescriptionStable.txt";
 
         // Constructor
         public AreaStableRoad(Player p)

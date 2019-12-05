@@ -58,7 +58,7 @@ namespace Guar
             else
             {
                 // Generic description
-                Console.WriteLine(area.Descritption);
+                AreaDescription(area.Description);
             }
             if (area.Npcs != null && area.Npcs.Count > 0)
             {
@@ -318,7 +318,7 @@ namespace Guar
         public void InvalidOption() => Console.WriteLine("You can't do that!");
 
         // Accepts a filename and outputs wanted text, Act1Description1
-        public void AreaDescritption(string filename)
+        public void AreaDescription(string filename)
         {
             string line;
             file = new StreamReader(filename);
