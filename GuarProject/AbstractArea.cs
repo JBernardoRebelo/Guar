@@ -41,13 +41,16 @@ namespace GuarProject
         /// </summary>
         public abstract GameState GameState { get; set; }
 
+        /// <summary>
+        /// Description of area with filename
+        /// </summary>
+        public abstract string Descritption { get; }
+
         // If player is in this area updates it
         public void UpdateArea(Player p)
         {
             p.Area = this;
         }
-
-        //public abstract void SwitchState(GameState state);
 
         // Add starting items to an area
         public abstract void AddItems();

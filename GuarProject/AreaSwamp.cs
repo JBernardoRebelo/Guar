@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace GuarProject
 {
@@ -10,6 +9,7 @@ namespace GuarProject
         public override ICollection<AbstractEnemy> Enemies { get; set; }
         public override ICollection<IItem> Items { get; set; }
         public override GameState GameState { get; set; }
+        public override string Descritption => "DescriptionSwamp.txt";
 
         public AreaSwamp(Player p)
         {
@@ -30,7 +30,11 @@ namespace GuarProject
 
         public override void AddItems()
         {
-            throw new NotImplementedException();
+            Weapon item = new RedGem();
+            Weapon item2 = new RedGem();
+
+            Items.Add(item);
+            Items.Add(item2);
         }
     }
 }

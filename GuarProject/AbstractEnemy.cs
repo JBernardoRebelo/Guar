@@ -4,7 +4,7 @@ using System.Text;
 
 namespace GuarProject
 {
-    public abstract class AbstractEnemy : IEntity, IAttackBehaviour
+    public abstract class AbstractEnemy : IEntity
     {
         public abstract int Health { get; set; }
         public abstract int Damage { get; set; }
@@ -13,12 +13,12 @@ namespace GuarProject
         public abstract int Intelligence { get; set; }
         public abstract  int Energy { get; set; }
         public virtual Weapon Weapon { get; set; }
-
-        // Generic attack to be overriden
-        public virtual void Attack(Player p)
+        public virtual AttackBehaviour AttackBehaviour { get; set; }
+        
+        // Generic Attack
+        public virtual void Attack()
         {
-            // Generic attack
-            p.HP -= Weapon.Damage;
+            AttackBehaviour.Attack();
         }
     }
 }

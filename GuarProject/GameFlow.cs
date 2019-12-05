@@ -11,6 +11,7 @@ namespace GuarProject
         private Render rnd = new Render();
         private GameState GmState;
         private string[] validExplorationOptions;
+        private string[] validMovementOptions;
         private string[] validBattleOptions;
         private readonly string fileBackS1 = "BackStory_1.txt";
         private readonly string cmdCheatSheet = "CommandCheatSheet.txt";
@@ -20,14 +21,21 @@ namespace GuarProject
             // Player
             Player p;
             Role r;
+            AbstractArea area;
 
-            // Player options Explore
+            // Player options Explore an area
             validExplorationOptions = new string[]
             {
                 "cheatsheet", "inventory",
                 "stats", "go to", "attack",
                 "look around", "pick up", "persuade",
                 "persuade", "pick pocket", "quit game"
+            };
+
+            // Travel trough areas
+            validMovementOptions = new string[]
+            {
+                "north", "south"
             };
 
             // Player options Battle
@@ -49,62 +57,23 @@ namespace GuarProject
 
             p = new Player(r);
             p.UpdateStatsRole(p.Role);
-
-            // Call game loop
-            Loop(p, GmState);
-        }
-
-        //// Act 1 gameloop
-        //private void GameLoop(Player p, GameState gamestate)
-        //{
-        //    string option;
-        //    IItem redGem = new RedGem();
-
-        //    List<IItem> inWorld = new List<IItem>();
-
-        //    // Add items in world
-        //    inWorld.Add(redGem);
-
-        //    rnd.UpdatePlayer1(p);
-
-        //    // Description 2
-        //    rnd.Act1Description1("Act1_Description1.txt");
-
-
-        //    // Display game state
-        //    rnd.DisplayGameMode(gamestate);
-
-        //    // Exploration mode 1
-        //    do
-        //    {
-        //        // Action option
-        //        option = rnd.Option();
-
-        //        while (!validExplorationOptions.Any(x => x.Contains(option)))
-        //        {
-        //            rnd.InvalidOption();
-        //            option = rnd.Option();
-        //        }
-
-        //        ExecuteActionsExp(p, option, inWorld);
-
-        //    } while (gamestate == GameState.Explore);
-        //}
-
-        // New area gameloop
-        public void Loop(Player p, GameState gameState)
-        {
-            string option;
-
-            // New area instance
-            AbstractArea area = new AreaStableRoad(p);
-            area.GameState = gameState;
+            area = new AreaSwamp(p);
 
             // Show last item
             rnd.UpdatePlayer1(p);
 
-            // Description 2
-            rnd.Act1Description1("Act1_Description1.txt");
+            // Call game loop
+            Loop(p, GmState, area);
+        }
+
+        // Gameloop
+        public void Loop(Player p, GameState gameState, AbstractArea area)
+        {
+            string option;
+            area.GameState = gameState;
+
+            // Show Description of area
+            rnd.AreaDescritption(area.Descritption);
 
             // Display game state
             rnd.DisplayGameMode(area.GameState);
@@ -156,6 +125,8 @@ namespace GuarProject
                 rnd.PrintStats(p);
 
             // Go to (place)
+            if(action == validMovementOptions[0])
+
             // void TravelTo(place)
 
             // Attack (engage)

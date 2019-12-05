@@ -298,7 +298,7 @@ namespace GuarProject
         public void InvalidOption() => Console.WriteLine("You can't do that!");
 
         // Accepts a filename and outputs wanted text, Act1Description1
-        public void Act1Description1(string filename)
+        public void AreaDescritption(string filename)
         {
             string line;
             file = new StreamReader(filename);
