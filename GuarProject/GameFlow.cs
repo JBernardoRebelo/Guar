@@ -201,6 +201,15 @@ namespace GuarProject
                     Loop(p, newArea);
                 }
             }
+            if (dir == "south")
+            {
+                if (area is AreaStableRoad)
+                {
+                    newArea = new AreaForest(p);
+
+                    Loop(p, newArea);
+                }
+            }
         }
     }
 }
