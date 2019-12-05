@@ -13,8 +13,13 @@ namespace GuarProject
 
         public AreaSwamp(Player p)
         {
+            GameState = GameState.Explore;
+
             Enemies = new List<AbstractEnemy>();
             Items = new List<IItem>();
+
+            AddEnemies();
+            AddItems();
 
             UpdateArea(p);
         }

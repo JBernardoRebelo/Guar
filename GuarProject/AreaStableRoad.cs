@@ -12,10 +12,13 @@ namespace GuarProject
         // Constructor
         public AreaStableRoad(Player p)
         {
+            GameState = GameState.Explore;
+
             // Initialize collections
             Items = new List<IItem>();
-            UpdateArea(p);
             AddItems();
+
+            UpdateArea(p);
         }
 
         // Add item

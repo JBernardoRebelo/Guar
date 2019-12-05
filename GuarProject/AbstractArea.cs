@@ -29,7 +29,7 @@ namespace GuarProject
         /// <summary>
         /// Instance of render to use
         /// </summary>
-        public virtual Render Render { get; }
+        public virtual Render Render { get; set; }
 
         /// <summary>
         /// Instance of random for npc and item generation for big areas
@@ -58,12 +58,13 @@ namespace GuarProject
         // Add starting enemies to an area
         public virtual void AddEnemies()
         {
+            Render = new Render();
             Render.NoEnemiesHere();
         }
-
         // Add starting NPCS to an area
         public virtual void AddNpcs()
         {
+            Render = new Render();
             Render.NoNpcsHere();
         }
     }

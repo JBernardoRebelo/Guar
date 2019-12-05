@@ -9,12 +9,8 @@ namespace GuarProject
     public class GameFlow
     {
         private Render rnd = new Render();
-        private GameState GmState;
         private string[] validExplorationOptions;
-        private string[] validMovementOptions;
         private string[] validBattleOptions;
-        private readonly string fileBackS1 = "BackStory_1.txt";
-        private readonly string cmdCheatSheet = "CommandCheatSheet.txt";
 
         public void Start()
         {
@@ -27,15 +23,9 @@ namespace GuarProject
             validExplorationOptions = new string[]
             {
                 "cheatsheet", "inventory",
-                "stats", "go to", "attack",
+                "stats", "cheat sheet", "attack",
                 "look around", "pick up", "persuade",
-                "persuade", "pick pocket", "quit game"
-            };
-
-            // Travel trough areas
-            validMovementOptions = new string[]
-            {
-                "north", "south"
+                "pick pocket", "quit game", "north", "south"
             };
 
             // Player options Battle
@@ -46,9 +36,6 @@ namespace GuarProject
                 "run", "sneak", "quit game"
             };
 
-            // Game state is explore
-            GmState = GameState.Explore;
-
             // Get file for backstory
             //rnd.BackStory_1(fileBackS1);
 
@@ -57,20 +44,19 @@ namespace GuarProject
 
             p = new Player(r);
             p.UpdateStatsRole(p.Role);
-            area = new AreaSwamp(p);
+            area = new AreaStableRoad(p);
 
             // Show last item
             rnd.UpdatePlayer1(p);
 
             // Call game loop
-            Loop(p, GmState, area);
+            Loop(p, area);
         }
 
         // Gameloop
-        public void Loop(Player p, GameState gameState, AbstractArea area)
+        public void Loop(Player p, AbstractArea area)
         {
             string option;
-            area.GameState = gameState;
 
             // Show Description of area
             rnd.AreaDescritption(area.Descritption);
@@ -90,7 +76,7 @@ namespace GuarProject
                     option = rnd.Option();
                 }
 
-                ExecuteActionsExp(p, option, area.Items);
+                ExecuteActionsExp(p, option, area);
 
             } while (area.GameState == GameState.Explore);
         }
@@ -109,44 +95,76 @@ namespace GuarProject
             }
         }
 
+        // Calls methods according to wanted action
         private void ExecuteActionsExp
-            (Player p, string action, ICollection<IItem> inWorld)
+            (Player p, string action, AbstractArea area)
         {
-            // Call cheatSheet
-            if (action == validExplorationOptions[0])
-                rnd.CmdCheatSheet("CommandCheatSheet.txt");
+            switch (action)
+            {
+                // Display cheat sheet
+                case "cheatsheet":
+                    rnd.CmdCheatSheet("CommandCheatSheet.txt");
+                    break;
 
-            // Show inventory
-            if (action == validExplorationOptions[1])
-                rnd.InventoryInteractions(p);
+                // Display cheat sheet variation
+                case "cheat sheet":
+                    rnd.CmdCheatSheet("CommandCheatSheet.txt");
+                    break;
 
-            // Check stats
-            if (action == validExplorationOptions[2])
-                rnd.PrintStats(p);
+                // Display inventory
+                case "inventory":
+                    rnd.InventoryInteractions(p);
+                    break;
 
-            // Go to (place)
-            if(action == validMovementOptions[0])
+                // Show stats
+                case "stats":
+                    rnd.PrintStats(p);
+                    break;
 
-            // void TravelTo(place)
+                // Head north
+                case "north":
+                    SwitchArea(p, action, area);
+                    break;
+
+                // Head south
+                case "south":
+                    SwitchArea(p, action, area);
+                    break;
+
+                // Display items and npcs in area
+                case "look around":
+                    rnd.LookAround(area);
+                    break;
+
+                // Picks up objects
+                case "pick up":
+                    p.PickupItem(area.Items);
+                    break;
+
+                // Attacks an enemy
+                case "attack":
+                    if (area.Enemies == null)
+                    {
+                        rnd.NoEnemiesHere();
+                    }
+                    break;
+
+                // Leave game
+                case "quit game":
+                    rnd.QuitGame();
+                    break;
+
+                default:
+                    rnd.InvalidOption();
+                    break;
+            }
 
             // Attack (engage)
             // Change game state
 
-            // Look around
-            if (action == validExplorationOptions[5])
-                rnd.LookAround(inWorld);
-
-            // Pick up item
-            if (action == validExplorationOptions[6])
-                p.PickupItem(inWorld);
-
             // Persuade (npc name)
 
             // PickPocket (npc name)
-
-            // Quit game
-            if (action == validExplorationOptions[10])
-                rnd.QuitGame();
         }
 
         private void ExecuteActionsBattle(Player p, string action)
@@ -162,6 +180,27 @@ namespace GuarProject
             // Run
 
             // Sneak
+        }
+
+        /// <summary>
+        /// Accepts a player, a direction and an area to switch to wanted area
+        /// </summary>
+        /// <param name="p"></param>
+        /// <param name="dir"></param>
+        /// <param name="area"></param>
+        private void SwitchArea(Player p, string dir, AbstractArea area)
+        {
+            AbstractArea newArea;
+
+            if (dir == "north")
+            {
+                if (area is AreaStableRoad)
+                {
+                    newArea = new AreaSwamp(p);
+
+                    Loop(p, newArea);
+                }
+            }
         }
     }
 }
