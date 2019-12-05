@@ -37,7 +37,7 @@ namespace GuarProject
             };
 
             // Get file for backstory
-            rnd.BackStory_1("BackStory_1.txt");
+            //rnd.BackStory_1(fileBackS1);
 
             // Hello player, pick role
             r = rnd.RolePicker();

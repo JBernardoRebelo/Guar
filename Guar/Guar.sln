@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29306.81
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GuarProject", "GuarProject\GuarProject.csproj", "{CC399138-FF71-4673-91AA-B82A69BD02DD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Guar", "Guar.csproj", "{EE0152B2-2ECB-4ED3-B761-1E4AB8B65DEE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CC399138-FF71-4673-91AA-B82A69BD02DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CC399138-FF71-4673-91AA-B82A69BD02DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CC399138-FF71-4673-91AA-B82A69BD02DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CC399138-FF71-4673-91AA-B82A69BD02DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE0152B2-2ECB-4ED3-B761-1E4AB8B65DEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE0152B2-2ECB-4ED3-B761-1E4AB8B65DEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE0152B2-2ECB-4ED3-B761-1E4AB8B65DEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE0152B2-2ECB-4ED3-B761-1E4AB8B65DEE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {FC154BA4-81F6-4A75-B344-BB75BB6E01D6}
+		SolutionGuid = {DDD18C8D-949F-4DE5-8882-515F7470E1A0}
 	EndGlobalSection
 EndGlobal

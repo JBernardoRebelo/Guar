@@ -4,7 +4,7 @@ using System.Threading;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GuarProject
+namespace Guar
 {
     public class Render
     {
@@ -79,7 +79,7 @@ namespace GuarProject
 
             // Paladin roles
             string[] paladinRoles =
-                new string[] { "paladin", "fighter", "tank", "knight" };
+                new string[] { "paladin", "fighter", "tank" };
 
             // Assissin roles
             string[] assassinRoles =

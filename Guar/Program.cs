@@ -1,6 +1,8 @@
-﻿namespace GuarProject
+﻿using GuarProject;
+
+namespace Guar
 {
-    public class Program
+    class Program
     {
         private static void Main(string[] args)
         {
