@@ -13,7 +13,7 @@ namespace Guar
         public abstract int Intelligence { get; set; }
         public abstract int Energy { get; set; }
         public abstract Race Race { get; }
-        public virtual Weapon Weapon { get; set; }
+        public virtual AbstractWeapon Weapon { get; set; }
         public virtual AttackBehaviour AttackBehaviour { get; set; }
 
         // Generic Attack

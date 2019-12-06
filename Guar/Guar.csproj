@@ -55,13 +55,14 @@
     <Compile Include="IEntity.cs" />
     <Compile Include="IItem.cs" />
     <Compile Include="ImpEnemy.cs" />
+    <Compile Include="ItemNull.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Race.cs" />
     <Compile Include="Render.cs" />
     <Compile Include="Rolecs.cs" />
-    <Compile Include="Weapon.cs" />
+    <Compile Include="AbstractWeapon.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Guar
 {
-    public abstract class Weapon : IItem
+    public abstract class AbstractWeapon : IItem
     {
         public abstract int Weight { get; }
         public abstract int Value { get; }
@@ -15,7 +15,7 @@ namespace Guar
         public bool Found { get; set; }
     }
 
-    public abstract class WeaponDecorator : Weapon
+    public abstract class WeaponDecorator : AbstractWeapon
     {
         public abstract bool Decorated { get; set; }
     }
@@ -47,7 +47,7 @@ namespace Guar
         /// Red gem weapon decorator
         /// </summary>
         /// <param name="weapon"> Accepts a weapon to decorate </param>
-        public RedGem(Weapon weapon)
+        public RedGem(AbstractWeapon weapon)
         {
             Weight += weapon.Weight;
             Value += (weapon.Value / 2) + 30;
@@ -60,7 +60,7 @@ namespace Guar
     }
 
     // Class heavy sword
-    public class HeavySword : Weapon
+    public class HeavySword : AbstractWeapon
     {
         public override int Weight { get => 30; }
         public override int Value { get => 15; }
@@ -79,7 +79,7 @@ namespace Guar
     }
 
     // Class dagger
-    public class Dagger : Weapon
+    public class Dagger : AbstractWeapon
     {
         public override int Weight => 5;
         public override int Value => 15;
@@ -98,7 +98,7 @@ namespace Guar
     }
 
     // Class staff
-    public class Staff : Weapon
+    public class Staff : AbstractWeapon
     {
         public override int Weight => 25;
         public override int Value => 15;
@@ -117,7 +117,7 @@ namespace Guar
     }
 
     // Class stick
-    public class Stick : Weapon
+    public class Stick : AbstractWeapon
     {
         public override int Weight => 5;
         public override int Value => 1;

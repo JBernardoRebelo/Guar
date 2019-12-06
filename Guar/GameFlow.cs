@@ -78,7 +78,8 @@ namespace Guar
 
                 ExecuteActionsExp(p, option, area);
 
-            } while (area.GameState == GameState.Explore || option != "north" || option != "south" );
+            } while (area.GameState == GameState.Explore 
+            || option != "north" || option != "south" );
         }
 
         // Checks game state, calls according gameloops

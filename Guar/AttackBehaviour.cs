@@ -15,7 +15,7 @@
         }
 
         // Virtual attack that accepts a player
-        public virtual void Attack(Player p, Weapon w)
+        public virtual void Attack(Player p, AbstractWeapon w)
         {
 
         }

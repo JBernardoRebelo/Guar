@@ -59,7 +59,11 @@ namespace Guar
         {
             foreach (IItem i in inWorld)
             {
-                if (i.Found)
+                if(i is ItemNull)
+                {
+
+                }
+                else if (i.Found)
                 {
                     Inventory.Push(i);
                     Render.UpdateItemFeed(this);
@@ -86,19 +90,20 @@ namespace Guar
         // Pick pocket
 
         // Decorate weapon
-        public void DecorateWeapon(WeaponDecorator wpnDecorator, Weapon weapon)
+        public void DecorateWeapon(WeaponDecorator wpnDecorator,
+            AbstractWeapon weapon)
         {
-            Weapon newWeapon;
+            AbstractWeapon newWeapon;
 
             if (wpnDecorator is RedGem)
             {
                 // Decorate fire weapon
                 newWeapon = new RedGem(weapon);
                 Inventory.Push(newWeapon);
-                Render.UpdateItemFeed(this);
+                Render.UpdateItemFeed(this);   
             }
 
-            foreach (Weapon w in Inventory)
+            foreach (AbstractWeapon w in Inventory)
             {
                 if (w == wpnDecorator)
                 {
@@ -106,7 +111,7 @@ namespace Guar
                 }
                 else if (w == weapon)
                 {
-                    Inventory.Pop();
+                    //Inventory.Pop();
                 }
             }
             // Other decorations
@@ -117,7 +122,7 @@ namespace Guar
         public void UpdateStatsRole(Role role)
         {
             // Starter weapon
-            Weapon weapon;
+            AbstractWeapon weapon;
 
             // Assign role stats // Add weapon
             if (role == Role.Paladin)

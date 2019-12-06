@@ -50,8 +50,15 @@ namespace Guar
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 foreach (IItem i in area.Items)
                 {
-                    Console.WriteLine($" -* {i.Name}");
-                    i.Found = true;
+                    if (i is ItemNull)
+                    {
+                        Console.WriteLine("... only rocks, sticks and dirt");
+                    }
+                    else
+                    {
+                        Console.WriteLine($" -* {i.Name}");
+                        i.Found = true;
+                    }
                 }
                 Console.ForegroundColor = ConsoleColor.Gray;
             }
@@ -186,9 +193,9 @@ namespace Guar
                                 foreach (IItem j in p.Inventory)
                                 {
                                     if (choice == j.inEngineName
-                                        && j is Weapon)
+                                        && j is AbstractWeapon)
                                     {
-                                        Weapon w = j as Weapon;
+                                        AbstractWeapon w = j as AbstractWeapon;
 
                                         // Call decoration method
                                         p.DecorateWeapon(wd, w);
@@ -237,9 +244,9 @@ namespace Guar
             Console.WriteLine($"    Value: {i.Value}");
             Console.WriteLine($"    Weight: {i.Weight}\n");
 
-            if (i is Weapon)
+            if (i is AbstractWeapon)
             {
-                Weapon w = i as Weapon;
+                AbstractWeapon w = i as AbstractWeapon;
                 Console.WriteLine($"    Damage: {w.Damage}");
                 Console.WriteLine($"    Magic Damage: {w.MagicDamage}\n");
             }
@@ -257,26 +264,16 @@ namespace Guar
             Console.WriteLine("\n----- INVENTORY -----");
             foreach (IItem i in p.Inventory)
             {
-                Console.Write($" -> {i.Name}");
+                Console.WriteLine($" -> {i.Name}");
 
                 weight += i.Weight;
-
-                if (i is WeaponDecorator)
-                {
-                    wd = i as WeaponDecorator;
-
-                    if (wd.Decorated == false)
-                    {
-                        Console.WriteLine($" *");
-                    }
-                }
             }
             Console.WriteLine($"\nCarrying: {weight} of {maxweight}");
             Console.WriteLine("\n----- --------- -----\n");
             Console.Write("-> ");
             Console.ForegroundColor = ConsoleColor.Gray;
         }
-
+     
         // Accepts Player, prints all stats onscreen
         public void PrintStats(Player p)
         {

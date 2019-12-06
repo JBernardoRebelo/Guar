@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Guar
+﻿namespace Guar
 {
     public class AttackNoWeapon : AttackBehaviour
     {
