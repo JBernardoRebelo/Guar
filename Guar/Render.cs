@@ -33,49 +33,52 @@ namespace Guar
         // Outputs all items in world
         public void LookAround(AbstractArea area)
         {
-            if (area.Enemies != null && area.Enemies.Count > 0)
+            if (area.Enemies != null || area.Items != null || area.Npcs != null)
             {
-                Console.WriteLine($"Enemies...");
-                Console.ForegroundColor = ConsoleColor.Red;
-                foreach (AbstractEnemy e in area.Enemies)
+                if (area.Enemies != null && area.Enemies.Count > 0)
                 {
+                    Console.WriteLine($"Enemies...");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    foreach (AbstractEnemy e in area.Enemies)
+                    {
 
-                    Console.WriteLine($" -* {e.Race.ToString()}");
+                        Console.WriteLine($" -* {e.Race.ToString()}");
+                    }
+                    Console.ForegroundColor = ConsoleColor.Gray;
                 }
-                Console.ForegroundColor = ConsoleColor.Gray;
-            }
-            if (area.Items != null && area.Items.Count > 0)
-            {
-                Console.WriteLine($"Items on ground...");
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                foreach (IItem i in area.Items)
+                if (area.Items != null && area.Items.Count > 0)
                 {
-                    if (i is ItemNull)
+                    Console.WriteLine($"Items on ground...");
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    foreach (IItem i in area.Items)
                     {
-                        Console.WriteLine("... only rocks, sticks and dirt");
+                        if (i is ItemNull)
+                        {
+                            Console.WriteLine("..only rocks, sticks and dirt");
+                        }
+                        else
+                        {
+                            Console.WriteLine($" -* {i.Name}");
+                            i.Found = true;
+                        }
                     }
-                    else
-                    {
-                        Console.WriteLine($" -* {i.Name}");
-                        i.Found = true;
-                    }
+                    Console.ForegroundColor = ConsoleColor.Gray;
                 }
-                Console.ForegroundColor = ConsoleColor.Gray;
+                if (area.Npcs != null && area.Npcs.Count > 0)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    foreach (AbstractEnemy e in area.Enemies)
+                    {
+
+                        Console.WriteLine($" -- {e.Race.ToString()}");
+                    }
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                }
             }
             else
             {
                 // Generic description
                 AreaDescription(area.Description);
-            }
-            if (area.Npcs != null && area.Npcs.Count > 0)
-            {
-                Console.ForegroundColor = ConsoleColor.Green;
-                foreach (AbstractEnemy e in area.Enemies)
-                {
-
-                    Console.WriteLine($" -- {e.Race.ToString()}");
-                }
-                Console.ForegroundColor = ConsoleColor.Gray;
             }
         }
 
@@ -86,7 +89,7 @@ namespace Guar
 
             // Paladin roles
             string[] paladinRoles =
-                new string[] { "paladin", "fighter", "tank" };
+                new string[] { "paladin", "fighter", "tank", "knight" };
 
             // Assissin roles
             string[] assassinRoles =
@@ -138,6 +141,8 @@ namespace Guar
             string invAction;
             string action;
             string itemName;
+            string[] split;
+            string[] split2;
 
             // Display inventory items
             ShowInventoryItems(p);
@@ -152,7 +157,7 @@ namespace Guar
             {
                 try
                 {
-                    string[] split = invAction.Split(' ');
+                    split = invAction.Split(' ');
 
                     // Assign action in inventory and item name
                     action = split[0];
@@ -161,12 +166,6 @@ namespace Guar
                     {
                         itemName += split[i];
                     }
-
-                    //Console.WriteLine("\n****************************");
-                    //Console.WriteLine("Action: " + action);
-                    //Console.WriteLine("Item name: " + itemName);
-                    //Console.WriteLine("****************************\n");
-
                     if (action == "merge")
                     {
                         foreach (IItem i in p.Inventory)
@@ -181,15 +180,17 @@ namespace Guar
                                     " want to enpower?");
                                 Console.Write("-> ");
                                 choice = Console.ReadLine();
-                                string[] split2 = choice.Split(' ');
+
+                                split2 = choice.Split(' ');
                                 choice = split2[0];
+
+                                // Append code
                                 for (int k = 1; k < split2.Length; k++)
                                 {
                                     choice += split2[k];
                                 }
 
-                                Console.WriteLine(choice);
-
+                                // Decorate if valid
                                 foreach (IItem j in p.Inventory)
                                 {
                                     if (choice == j.inEngineName
@@ -198,14 +199,17 @@ namespace Guar
                                         AbstractWeapon w = j as AbstractWeapon;
 
                                         // Call decoration method
-                                        p.DecorateWeapon(wd, w);
+                                        if (p.DecorateWeapon(wd, w))
+                                        {
+                                            return;
+                                        }
                                     }
                                 }
                             }
                             else
                             {
-                                Console.WriteLine($"You can't use " +
-                                    $"the {itemName} for that!");
+                                Console.WriteLine($"That's not something" +
+                                    $" you can merge!");
                             }
                         }
                     }
@@ -226,9 +230,6 @@ namespace Guar
                 }
                 catch (Exception e)
                 {
-                    action = "invalid input";
-                    itemName = action;
-
                     Console.WriteLine("The Inventory does not " +
                         "recognize those words\n");
                     Console.WriteLine(e);
@@ -273,7 +274,7 @@ namespace Guar
             Console.Write("-> ");
             Console.ForegroundColor = ConsoleColor.Gray;
         }
-     
+
         // Accepts Player, prints all stats onscreen
         public void PrintStats(Player p)
         {

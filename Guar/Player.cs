@@ -90,32 +90,37 @@ namespace Guar
         // Pick pocket
 
         // Decorate weapon
-        public void DecorateWeapon(WeaponDecorator wpnDecorator,
+        public bool DecorateWeapon(WeaponDecorator wpnDecorator,
             AbstractWeapon weapon)
         {
             AbstractWeapon newWeapon;
 
-            if (wpnDecorator is RedGem)
+            if(weapon is WeaponDecorator)
             {
+                //cant decorate
+                return false;
+            } 
+            else if (wpnDecorator is RedGem)
+            {
+                //// Decorate fire weapon
+                //newWeapon = new RedGem(weapon);
+                //Inventory.Push(newWeapon);
+                //Render.UpdateItemFeed(this);
+
+                Inventory = new Stack<IItem>();
                 // Decorate fire weapon
                 newWeapon = new RedGem(weapon);
                 Inventory.Push(newWeapon);
-                Render.UpdateItemFeed(this);   
-            }
+                Render.UpdateItemFeed(this);
 
-            foreach (AbstractWeapon w in Inventory)
-            {
-                if (w == wpnDecorator)
-                {
+                return true;
 
-                }
-                else if (w == weapon)
-                {
-                    //Inventory.Pop();
-                }
+                // Add other items to inventory
             }
             // Other decorations
 
+
+            return false;
         }
 
         // Methods to assign stat changes
