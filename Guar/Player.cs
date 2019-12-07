@@ -117,6 +117,23 @@ namespace Guar
 
                 // Add other items to inventory
             }
+            else if (wpnDecorator is BlueGem)
+            {
+                //// Decorate fire weapon
+                //newWeapon = new RedGem(weapon);
+                //Inventory.Push(newWeapon);
+                //Render.UpdateItemFeed(this);
+
+                Inventory = new Stack<IItem>();
+                // Decorate fire weapon
+                newWeapon = new BlueGem(weapon);
+                Inventory.Push(newWeapon);
+                Render.UpdateItemFeed(this);
+
+                return true;
+
+                // Add other items to inventory
+            }
             // Other decorations
 
 

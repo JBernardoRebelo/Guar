@@ -60,6 +60,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Race.cs" />
+    <Compile Include="RedGem.cs" />
     <Compile Include="Render.cs" />
     <Compile Include="Rolecs.cs" />
     <Compile Include="AbstractWeapon.cs" />

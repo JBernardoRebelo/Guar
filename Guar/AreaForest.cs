@@ -34,7 +34,7 @@ namespace Guar
 
         public override void AddItems()
         {
-            AbstractWeapon item = new RedGem();
+            AbstractWeapon item = new BlueGem();
 
             Items.Add(item);
         }

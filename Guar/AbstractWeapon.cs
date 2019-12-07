@@ -20,45 +20,6 @@ namespace Guar
         public abstract bool Decorated { get; set; }
     }
 
-    public class RedGem : WeaponDecorator
-    {
-        public override int Weight { get; }
-        public override int Value { get; }
-        public override string Name { get; }
-        public override int Damage { get; set; }
-        public override int MagicDamage { get; set; }
-        public override bool Decorated { get; set; }
-        public override string inEngineName { get; }
-
-        // Default gem
-        public RedGem()
-        {
-            Weight = 2;
-            Value = 30;
-            Name = "Red Gem";
-            Damage = 0;
-            MagicDamage = 10;
-            Decorated = false;
-            Found = false;
-            inEngineName = "redgem";
-        }
-
-        /// <summary>
-        /// Red gem weapon decorator
-        /// </summary>
-        /// <param name="weapon"> Accepts a weapon to decorate </param>
-        public RedGem(AbstractWeapon weapon)
-        {
-            Weight += weapon.Weight;
-            Value += (weapon.Value / 2) + 30;
-            Name = "Flamming " + weapon.Name;
-            Damage = weapon.Damage;
-            MagicDamage += weapon.MagicDamage + 10;
-            Decorated = true;
-            inEngineName = "flamming" + weapon.inEngineName;
-        }
-    }
-
     // Class heavy sword
     public class HeavySword : AbstractWeapon
     {
