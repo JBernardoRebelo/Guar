@@ -22,10 +22,14 @@ namespace Guar
             AttackBehaviour.Attack();
         }
 
-        // Detection
-        public virtual void Detection()
+        // Detection return true if detect
+        public virtual bool Detection(Player p, int moves)
         {
+
+
+            return true;
             // Make something with this perception and player sneak
+
         }
     }
 }

@@ -70,7 +70,8 @@ namespace Guar
                 }
                 else
                 {
-                    Render.NoItemToPickUp(i.Name);
+                    Console.WriteLine("Npothung to pick up");
+                   // Render.NoItemToPickUp(i.Name);
                 }
             }
 
@@ -119,13 +120,8 @@ namespace Guar
             }
             else if (wpnDecorator is BlueGem)
             {
-                //// Decorate fire weapon
-                //newWeapon = new RedGem(weapon);
-                //Inventory.Push(newWeapon);
-                //Render.UpdateItemFeed(this);
-
                 Inventory = new Stack<IItem>();
-                // Decorate fire weapon
+
                 newWeapon = new BlueGem(weapon);
                 Inventory.Push(newWeapon);
                 Render.UpdateItemFeed(this);
@@ -134,10 +130,21 @@ namespace Guar
 
                 // Add other items to inventory
             }
-            // Other decorations
+            else if (wpnDecorator is GreenGem)
+            {
+                Inventory = new Stack<IItem>();
 
+                newWeapon = new GreenGem(weapon);
+                Inventory.Push(newWeapon);
+                Render.UpdateItemFeed(this);
 
-            return false;
+                return true;
+
+                // Add the deleted items
+            }
+                // Other decorations
+
+                return false;
         }
 
         // Methods to assign stat changes

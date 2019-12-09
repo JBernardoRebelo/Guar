@@ -37,7 +37,7 @@ namespace Guar
             };
 
             // Get file for backstory
-            rnd.BackStory_1("BackStory_1.txt");
+            //rnd.BackStory_1("BackStory_1.txt");
 
             // Hello player, pick role
             r = rnd.RolePicker();
@@ -57,6 +57,7 @@ namespace Guar
         public void Loop(Player p, AbstractArea area)
         {
             string option;
+            int moves = 0;
 
             // Show Description of area
             rnd.AreaDescription(area.Description);
@@ -67,6 +68,9 @@ namespace Guar
             // Exploration mode 1
             do
             {
+                // Enemies detect player
+                // if detect gamestate = batle
+
                 // Action option
                 option = rnd.Option();
 
@@ -77,7 +81,8 @@ namespace Guar
                 }
 
                 ExecuteActionsExp(p, option, area);
-
+                moves++;
+                Console.WriteLine($"Moves: {moves}");
             } while (area.GameState == GameState.Explore 
             || option != "north" || option != "south" );
         }

@@ -64,6 +64,12 @@ namespace Guar
                     }
                     Console.ForegroundColor = ConsoleColor.Gray;
                 }
+                else
+                {
+                    // Generic description
+                    AreaDescription(area.Description);
+                }
+
                 if (area.Npcs != null && area.Npcs.Count > 0)
                 {
                     Console.ForegroundColor = ConsoleColor.Green;
@@ -371,8 +377,8 @@ namespace Guar
         }
 
         // Display no items to pick up message
-        public static Action<string> NoItemToPickUp
-            = item => Console.WriteLine("No items to pick up");
+        public static void NoItemToPickUp()
+            => Console.WriteLine("Nothing to pick up");
 
         // Accepts a filename and outputs cheat sheet, Cheat sheet
         public Action<string> CmdCheatSheet
