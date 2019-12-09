@@ -19,6 +19,11 @@ namespace Guar
             Console.ForegroundColor = ConsoleColor.Gray;
         }
 
+        public void BattleFeed(Player p, AbstractEnemy e)
+        {
+            Console.WriteLine($"Your HP: {p.HP}");
+        }
+
         // Generic option menu
         public string Option()
         {
@@ -75,7 +80,6 @@ namespace Guar
                     Console.ForegroundColor = ConsoleColor.Green;
                     foreach (AbstractEnemy e in area.Enemies)
                     {
-
                         Console.WriteLine($" -- {e.Race.ToString()}");
                     }
                     Console.ForegroundColor = ConsoleColor.Gray;
@@ -263,7 +267,6 @@ namespace Guar
         // Show inventory
         private void ShowInventoryItems(Player p)
         {
-            WeaponDecorator wd;
             int weight = 0;
             int maxweight = p.CarryWeight;
 
@@ -371,9 +374,18 @@ namespace Guar
         // Displays game state
         public void DisplayGameMode(GameState g)
         {
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"\n~~~~~~ {g} Mode ~~~~~~\n");
-            Console.ForegroundColor = ConsoleColor.Gray;
+            if (g == GameState.Explore)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"\n~~~~~~ {g} Mode ~~~~~~\n");
+                Console.ForegroundColor = ConsoleColor.Gray;
+            }
+            else if (g == GameState.Battle)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"\n~~~~~~ {g} Mode ~~~~~~\n");
+                Console.ForegroundColor = ConsoleColor.Gray;
+            }
         }
 
         // Display no items to pick up message

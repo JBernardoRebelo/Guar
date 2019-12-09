@@ -68,9 +68,6 @@ namespace Guar
             // Exploration mode 1
             do
             {
-                // Enemies detect player
-                // if detect gamestate = batle
-
                 // Action option
                 option = rnd.Option();
 
@@ -81,23 +78,58 @@ namespace Guar
                 }
 
                 ExecuteActionsExp(p, option, area);
+
                 moves++;
                 Console.WriteLine($"Moves: {moves}");
-            } while (area.GameState == GameState.Explore 
-            || option != "north" || option != "south" );
+
+                // Check if battle
+                BattleChecker(p, moves, area);
+
+            } while (area.GameState == GameState.Explore && p.HP > 0);
         }
 
-        // Checks game state, calls according gameloops
-        private void StateCheck(GameState s)
+        // Advantage is player advantage, who attacked first
+        private void BattleLoop(Player p, AbstractEnemy enemy, bool advantage)
         {
-            if (s == GameState.Explore)
+            if(advantage)
             {
-                // Accepts current act progress
+                // Player attack with advantage
             }
-            else if (s == GameState.Battle)
+            while(enemy.Health > 0)
             {
-                // Battle loop
-                // Accepts a player and an entity
+                Console.WriteLine("You are being attacked");
+                enemy.AttackBehaviour.Attack(p, enemy);
+
+                if(p.HP < 0)
+                {
+                    break;
+                }
+
+                rnd.BattleFeed(p, enemy);
+                // Player attack menu
+            }
+        }
+
+        // Check if battle mode is engaged and switches game mode
+        private void BattleChecker(Player p, int moves, AbstractArea area)
+        {
+            // Batle checker
+            if (area.Enemies != null)
+            {
+                // Enemies detect player
+                // if detect gamestate = batle
+                foreach (AbstractEnemy enemy in area.Enemies)
+                {
+                    // If an enemy detects player change gamestate
+                    if (enemy.Detect(p, moves))
+                    {
+                        area.GameState = GameState.Battle;
+
+                        // No advantage
+                        BattleLoop(p, enemy, false);
+                    }
+                }
+                rnd.DisplayGameMode(area.GameState);
             }
         }
 

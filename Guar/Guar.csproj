@@ -49,7 +49,6 @@
     <Compile Include="AreaStableRoad.cs" />
     <Compile Include="AreaSwamp.cs" />
     <Compile Include="AttackBehaviour.cs" />
-    <Compile Include="AttackNoWeapon.cs" />
     <Compile Include="GameFlow.cs" />
     <Compile Include="GameState.cs" />
     <Compile Include="IEntity.cs" />

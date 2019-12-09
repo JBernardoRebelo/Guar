@@ -50,8 +50,9 @@ namespace Guar
         // Player actions
 
         // Attack
-        public void Attack()
+        public void Attack(AbstractEnemy enemy)
         {
+            enemy.Health--;
         }
 
         // Pick up
@@ -59,7 +60,7 @@ namespace Guar
         {
             foreach (IItem i in inWorld)
             {
-                if(i is ItemNull)
+                if (i is ItemNull)
                 {
 
                 }
@@ -68,11 +69,7 @@ namespace Guar
                     Inventory.Push(i);
                     Render.UpdateItemFeed(this);
                 }
-                else
-                {
-                    Console.WriteLine("Npothung to pick up");
-                   // Render.NoItemToPickUp(i.Name);
-                }
+                else { Render.NoItemToPickUp(); }
             }
 
             // Remove item from world
@@ -96,11 +93,11 @@ namespace Guar
         {
             AbstractWeapon newWeapon;
 
-            if(weapon is WeaponDecorator)
+            if (weapon is WeaponDecorator)
             {
                 //cant decorate
                 return false;
-            } 
+            }
             else if (wpnDecorator is RedGem)
             {
                 //// Decorate fire weapon
@@ -142,9 +139,9 @@ namespace Guar
 
                 // Add the deleted items
             }
-                // Other decorations
+            // Other decorations
 
-                return false;
+            return false;
         }
 
         // Methods to assign stat changes

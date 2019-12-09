@@ -17,19 +17,18 @@ namespace Guar
         public virtual AttackBehaviour AttackBehaviour { get; set; }
 
         // Generic Attack
-        public virtual void Attack()
+        public virtual void Attack(Player p)
         {
-            AttackBehaviour.Attack();
+            AttackBehaviour.Attack(p, this);
         }
 
         // Detection return true if detect
-        public virtual bool Detection(Player p, int moves)
+        public virtual bool Detect(Player p, int moves)
         {
-
-
             return true;
             // Make something with this perception and player sneak
-
         }
+
+        // Note: Enemy's power should rise with players
     }
 }
