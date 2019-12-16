@@ -4,11 +4,57 @@ using System.Threading;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GuarProject
+namespace Guar
 {
     public class Render
     {
+        private Random _random = new Random();
+
         private StreamReader file;
+
+        /// <summary>
+        /// Display's a random tip
+        /// </summary>
+        public void DisplayTip()
+        {
+            // Index of tip to be used
+            int tipO;
+
+            string cheatTip = "If you are felling lost" +
+                " type 'cheat sheet' to access a list of" +
+                " usefull info on the game!";
+
+            string detect = "Your Sneak points manage how" +
+                " many moves you can make before an enemy notices you!";
+
+            string warning = "Unfortunately you can't fight creatures in" +
+                " this version! So don't be sad if you die D:";
+
+            string gems = "Gems are used to power your weapon! If you" +
+                " catch one you can use it right away by accessing the" +
+                " inventory and pressing 'merge'";
+
+            string classe = "Don't be sad about the class you chose," +
+                " you can always restart the game!";
+
+            string gameNotGood = "If you don't like reading, then this" +
+                " game is not for you!";
+
+            string lookAround = "As you enter an area you should always" +
+                " 'look around'! By doing so, you get a list of items," +
+                " enemies and npc's in it!";
+
+            // Array of tips
+            string[] tips = new string[] { cheatTip, detect,
+                warning, gems, classe, cheatTip, lookAround, cheatTip};
+
+            // Display a tip
+            tipO = _random.Next(0, tips.Length);
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"*protip: {tips[tipO]}");
+            Console.ForegroundColor = ConsoleColor.Gray;
+        }
 
         // Output item pick up message
         public static void UpdateItemFeed(Player p)
@@ -17,6 +63,11 @@ namespace GuarProject
             Console.WriteLine($"\n** {p.Inventory.Peek().Name}" +
                 $" has been added to your inventory.\n");
             Console.ForegroundColor = ConsoleColor.Gray;
+        }
+
+        public void BattleFeed(Player p, AbstractEnemy e)
+        {
+            Console.WriteLine($"Your HP: {p.HP}");
         }
 
         // Generic option menu
@@ -33,42 +84,57 @@ namespace GuarProject
         // Outputs all items in world
         public void LookAround(AbstractArea area)
         {
-            if (area.Enemies != null && area.Enemies.Count > 0)
+            if (area.Enemies != null || area.Items != null || area.Npcs != null)
             {
-                Console.WriteLine($"Enemies...");
-                Console.ForegroundColor = ConsoleColor.Red;
-                foreach (AbstractEnemy e in area.Enemies)
+                if (area.Enemies != null && area.Enemies.Count > 0)
                 {
+                    Console.WriteLine($"Enemies...");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    foreach (AbstractEnemy e in area.Enemies)
+                    {
 
-                    Console.WriteLine($" -* {e.Race.ToString()}");
+                        Console.WriteLine($" -* {e.Race.ToString()}");
+                    }
+                    Console.ForegroundColor = ConsoleColor.Gray;
                 }
-                Console.ForegroundColor = ConsoleColor.Gray;
-            }
-            if (area.Items != null && area.Items.Count > 0)
-            {
-                Console.WriteLine($"Items on ground...");
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                foreach (IItem i in area.Items)
+                if (area.Items != null && area.Items.Count > 0)
                 {
-                    Console.WriteLine($" -* {i.Name}");
-                    i.Found = true;
+                    Console.WriteLine($"Items on ground...");
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    foreach (IItem i in area.Items)
+                    {
+                        if (i is ItemNull)
+                        {
+                            Console.WriteLine("..only rocks, sticks and dirt");
+                        }
+                        else
+                        {
+                            Console.WriteLine($" -* {i.Name}");
+                            i.Found = true;
+                        }
+                    }
+                    Console.ForegroundColor = ConsoleColor.Gray;
                 }
-                Console.ForegroundColor = ConsoleColor.Gray;
+                else
+                {
+                    // Generic description
+                    AreaDescription(area.Description);
+                }
+
+                if (area.Npcs != null && area.Npcs.Count > 0)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    foreach (AbstractEnemy e in area.Enemies)
+                    {
+                        Console.WriteLine($" -- {e.Race.ToString()}");
+                    }
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                }
             }
             else
             {
                 // Generic description
-                Console.WriteLine(area.Descritption);
-            }
-            if(area.Npcs != null && area.Npcs.Count > 0)
-            {
-                Console.ForegroundColor = ConsoleColor.Green;
-                foreach (AbstractEnemy e in area.Enemies)
-                {
-
-                    Console.WriteLine($" -- {e.Race.ToString()}");
-                }
-                Console.ForegroundColor = ConsoleColor.Gray;
+                AreaDescription(area.Description);
             }
         }
 
@@ -79,7 +145,7 @@ namespace GuarProject
 
             // Paladin roles
             string[] paladinRoles =
-                new string[] { "paladin", "fighter", "tank" };
+                new string[] { "paladin", "fighter", "tank", "knight" };
 
             // Assissin roles
             string[] assassinRoles =
@@ -131,6 +197,8 @@ namespace GuarProject
             string invAction;
             string action;
             string itemName;
+            string[] split;
+            string[] split2;
 
             // Display inventory items
             ShowInventoryItems(p);
@@ -145,7 +213,7 @@ namespace GuarProject
             {
                 try
                 {
-                    string[] split = invAction.Split(' ');
+                    split = invAction.Split(' ');
 
                     // Assign action in inventory and item name
                     action = split[0];
@@ -154,12 +222,6 @@ namespace GuarProject
                     {
                         itemName += split[i];
                     }
-
-                    //Console.WriteLine("\n****************************");
-                    //Console.WriteLine("Action: " + action);
-                    //Console.WriteLine("Item name: " + itemName);
-                    //Console.WriteLine("****************************\n");
-
                     if (action == "merge")
                     {
                         foreach (IItem i in p.Inventory)
@@ -174,31 +236,36 @@ namespace GuarProject
                                     " want to enpower?");
                                 Console.Write("-> ");
                                 choice = Console.ReadLine();
-                                string[] split2 = choice.Split(' ');
+
+                                split2 = choice.Split(' ');
                                 choice = split2[0];
+
+                                // Append code
                                 for (int k = 1; k < split2.Length; k++)
                                 {
                                     choice += split2[k];
                                 }
 
-                                Console.WriteLine(choice);
-
+                                // Decorate if valid
                                 foreach (IItem j in p.Inventory)
                                 {
                                     if (choice == j.inEngineName
-                                        && j is Weapon)
+                                        && j is AbstractWeapon)
                                     {
-                                        Weapon w = j as Weapon;
+                                        AbstractWeapon w = j as AbstractWeapon;
 
                                         // Call decoration method
-                                        p.DecorateWeapon(wd, w);
+                                        if (p.DecorateWeapon(wd, w))
+                                        {
+                                            return;
+                                        }
                                     }
                                 }
                             }
                             else
                             {
-                                Console.WriteLine($"You can't use " +
-                                    $"the {itemName} for that!");
+                                Console.WriteLine($"That's not something" +
+                                    $" you can merge!");
                             }
                         }
                     }
@@ -219,9 +286,6 @@ namespace GuarProject
                 }
                 catch (Exception e)
                 {
-                    action = "invalid input";
-                    itemName = action;
-
                     Console.WriteLine("The Inventory does not " +
                         "recognize those words\n");
                     Console.WriteLine(e);
@@ -237,9 +301,9 @@ namespace GuarProject
             Console.WriteLine($"    Value: {i.Value}");
             Console.WriteLine($"    Weight: {i.Weight}\n");
 
-            if (i is Weapon)
+            if (i is AbstractWeapon)
             {
-                Weapon w = i as Weapon;
+                AbstractWeapon w = i as AbstractWeapon;
                 Console.WriteLine($"    Damage: {w.Damage}");
                 Console.WriteLine($"    Magic Damage: {w.MagicDamage}\n");
             }
@@ -249,7 +313,6 @@ namespace GuarProject
         // Show inventory
         private void ShowInventoryItems(Player p)
         {
-            WeaponDecorator wd;
             int weight = 0;
             int maxweight = p.CarryWeight;
 
@@ -257,19 +320,9 @@ namespace GuarProject
             Console.WriteLine("\n----- INVENTORY -----");
             foreach (IItem i in p.Inventory)
             {
-                Console.Write($" -> {i.Name}");
+                Console.WriteLine($" -> {i.Name}");
 
                 weight += i.Weight;
-
-                if (i is WeaponDecorator)
-                {
-                    wd = i as WeaponDecorator;
-
-                    if (wd.Decorated == false)
-                    {
-                        Console.WriteLine($" *");
-                    }
-                }
             }
             Console.WriteLine($"\nCarrying: {weight} of {maxweight}");
             Console.WriteLine("\n----- --------- -----\n");
@@ -318,7 +371,7 @@ namespace GuarProject
         public void InvalidOption() => Console.WriteLine("You can't do that!");
 
         // Accepts a filename and outputs wanted text, Act1Description1
-        public void AreaDescritption(string filename)
+        public void AreaDescription(string filename)
         {
             string line;
             file = new StreamReader(filename);
@@ -367,14 +420,23 @@ namespace GuarProject
         // Displays game state
         public void DisplayGameMode(GameState g)
         {
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"\n~~~~~~ {g} Mode ~~~~~~\n");
-            Console.ForegroundColor = ConsoleColor.Gray;
+            if (g == GameState.Explore)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"\n~~~~~~ {g} Mode ~~~~~~\n");
+                Console.ForegroundColor = ConsoleColor.Gray;
+            }
+            else if (g == GameState.Battle)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"\n~~~~~~ {g} Mode ~~~~~~\n");
+                Console.ForegroundColor = ConsoleColor.Gray;
+            }
         }
 
         // Display no items to pick up message
-        public static Action<string> NoItemToPickUp
-            = item => Console.WriteLine("No items to pick up");
+        public static void NoItemToPickUp()
+            => Console.WriteLine("Nothing to pick up");
 
         // Accepts a filename and outputs cheat sheet, Cheat sheet
         public Action<string> CmdCheatSheet

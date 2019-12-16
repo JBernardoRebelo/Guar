@@ -4,7 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 
-namespace GuarProject
+namespace Guar
 {
     public class GameFlow
     {
@@ -37,7 +37,7 @@ namespace GuarProject
             };
 
             // Get file for backstory
-            //rnd.BackStory_1(fileBackS1);
+            rnd.BackStory_1("BackStory_1.txt");
 
             // Hello player, pick role
             r = rnd.RolePicker();
@@ -57,16 +57,20 @@ namespace GuarProject
         public void Loop(Player p, AbstractArea area)
         {
             string option;
+            int moves = 0;
 
             // Show Description of area
-            rnd.AreaDescritption(area.Descritption);
+            rnd.AreaDescription(area.Description);
 
             // Display game state
             rnd.DisplayGameMode(area.GameState);
 
+            rnd.DisplayTip();
+
             // Exploration mode 1
             do
             {
+
                 // Action option
                 option = rnd.Option();
 
@@ -78,20 +82,58 @@ namespace GuarProject
 
                 ExecuteActionsExp(p, option, area);
 
-            } while (area.GameState == GameState.Explore);
+                moves++;
+                Console.WriteLine($"Moves: {moves}");
+
+                // Check if battle
+                BattleChecker(p, moves, area);
+
+            } while (area.GameState == GameState.Explore && p.HP > 0);
         }
 
-        // Checks game state, calls according gameloops
-        private void StateCheck(GameState s)
+        // Advantage is player advantage, who attacked first
+        private void BattleLoop
+            (Player p, AbstractEnemy enemy, bool advantage, AbstractArea area)
         {
-            if (s == GameState.Explore)
+            rnd.DisplayGameMode(area.GameState);
+
+            if (advantage)
             {
-                // Accepts current act progress
+                // Player attack with advantage
             }
-            else if (s == GameState.Battle)
+            while (enemy.Health > 0)
             {
-                // Battle loop
-                // Accepts a player and an entity
+                Console.WriteLine("You are being attacked");
+                enemy.AttackBehaviour.Attack(p, enemy);
+
+                if (p.HP < 0)
+                {
+                    break;
+                }
+
+                rnd.BattleFeed(p, enemy);
+                // Player attack menu
+            }
+        }
+
+        // Check if battle mode is engaged and switches game mode
+        private void BattleChecker(Player p, int moves, AbstractArea area)
+        {
+            // Batle checker
+            if (area.Enemies != null)
+            {
+                // Enemies detect player
+                // if detect gamestate = batle
+                foreach (AbstractEnemy enemy in area.Enemies)
+                {
+                    // If an enemy detects player change gamestate
+                    if (enemy.Detect(p, moves))
+                    {
+                        area.GameState = GameState.Battle;
+                        // No advantage
+                        BattleLoop(p, enemy, false, area);
+                    }
+                }
             }
         }
 

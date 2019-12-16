@@ -1,4 +1,4 @@
-﻿namespace GuarProject
+﻿namespace Guar
 {
     // Has all possible roles
     public enum Role

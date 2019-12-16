@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace GuarProject
+namespace Guar
 {
     public interface IEntity
     {
@@ -12,6 +12,6 @@ namespace GuarProject
         int ID { get; set; }
         int Intelligence { get; set; }
         int Energy { get; set; }
-        Race Race { get;}
+        Race Race { get; }
     }
 }

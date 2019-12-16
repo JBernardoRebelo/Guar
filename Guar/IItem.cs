@@ -1,4 +1,4 @@
-﻿namespace GuarProject
+﻿namespace Guar
 {
     // Interface of items
     public interface IItem

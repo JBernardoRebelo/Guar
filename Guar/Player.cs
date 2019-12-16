@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GuarProject
+namespace Guar
 {
     public class Player
     {
@@ -50,8 +50,9 @@ namespace GuarProject
         // Player actions
 
         // Attack
-        public void Attack()
+        public void Attack(AbstractEnemy enemy)
         {
+            enemy.Health--;
         }
 
         // Pick up
@@ -59,15 +60,16 @@ namespace GuarProject
         {
             foreach (IItem i in inWorld)
             {
-                if (i.Found)
+                if (i is ItemNull)
+                {
+
+                }
+                else if (i.Found)
                 {
                     Inventory.Push(i);
                     Render.UpdateItemFeed(this);
                 }
-                else
-                {
-                    Render.NoItemToPickUp(i.Name);
-                }
+                else { Render.NoItemToPickUp(); }
             }
 
             // Remove item from world
@@ -86,38 +88,67 @@ namespace GuarProject
         // Pick pocket
 
         // Decorate weapon
-        public void DecorateWeapon(WeaponDecorator wpnDecorator, Weapon weapon)
+        public bool DecorateWeapon(WeaponDecorator wpnDecorator,
+            AbstractWeapon weapon)
         {
-            Weapon newWeapon;
+            AbstractWeapon newWeapon;
 
-            if (wpnDecorator is RedGem)
+            if (weapon is WeaponDecorator)
             {
+                //cant decorate
+                return false;
+            }
+            else if (wpnDecorator is RedGem)
+            {
+                //// Decorate fire weapon
+                //newWeapon = new RedGem(weapon);
+                //Inventory.Push(newWeapon);
+                //Render.UpdateItemFeed(this);
+
+                Inventory = new Stack<IItem>();
                 // Decorate fire weapon
                 newWeapon = new RedGem(weapon);
                 Inventory.Push(newWeapon);
                 Render.UpdateItemFeed(this);
+
+                return true;
+
+                // Add other items to inventory
             }
-
-            foreach (Weapon w in Inventory)
+            else if (wpnDecorator is BlueGem)
             {
-                if (w == wpnDecorator)
-                {
+                Inventory = new Stack<IItem>();
 
-                }
-                else if (w == weapon)
-                {
-                    Inventory.Pop();
-                }
+                newWeapon = new BlueGem(weapon);
+                Inventory.Push(newWeapon);
+                Render.UpdateItemFeed(this);
+
+                return true;
+
+                // Add other items to inventory
+            }
+            else if (wpnDecorator is GreenGem)
+            {
+                Inventory = new Stack<IItem>();
+
+                newWeapon = new GreenGem(weapon);
+                Inventory.Push(newWeapon);
+                Render.UpdateItemFeed(this);
+
+                return true;
+
+                // Add the deleted items
             }
             // Other decorations
 
+            return false;
         }
 
         // Methods to assign stat changes
         public void UpdateStatsRole(Role role)
         {
             // Starter weapon
-            Weapon weapon;
+            AbstractWeapon weapon;
 
             // Assign role stats // Add weapon
             if (role == Role.Paladin)
