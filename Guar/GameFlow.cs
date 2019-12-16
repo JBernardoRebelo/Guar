@@ -25,7 +25,7 @@ namespace Guar
                 "cheatsheet", "inventory",
                 "stats", "cheat sheet", "attack",
                 "look around", "pick up", "persuade",
-                "pick pocket", "quit game", "north", "south"
+                "pick pocket", "quit game", "north", "south", "tip"
             };
 
             // Player options Battle
@@ -189,6 +189,10 @@ namespace Guar
                     {
                         rnd.NoEnemiesHere();
                     }
+                    break;
+
+                case "tip":
+                    rnd.DisplayTip();
                     break;
 
                 // Leave game
