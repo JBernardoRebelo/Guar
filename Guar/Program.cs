@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Guar
 {
@@ -13,6 +9,8 @@ namespace Guar
             // Call start
             GameFlow game = new GameFlow();
             game.Start();
+
+            Console.ReadLine();
         }
     }
 }

@@ -8,7 +8,53 @@ namespace Guar
 {
     public class Render
     {
+        private Random _random = new Random();
+
         private StreamReader file;
+
+        /// <summary>
+        /// Display's a random tip
+        /// </summary>
+        public void DisplayTip()
+        {
+            // Index of tip to be used
+            int tipO;
+
+            string cheatTip = "If you are felling lost" +
+                " type 'cheat sheet' to access a list of" +
+                " usefull info on the game!";
+
+            string detect = "Your Sneak points manage how" +
+                " many moves you can make before an enemy notices you!";
+
+            string warning = "Unfortunately you can't fight creatures in" +
+                " this version! So don't be sad if you die D:";
+
+            string gems = "Gems are used to power your weapon! If you" +
+                " catch one you can use it right away by accessing the" +
+                " inventory and pressing 'merge'";
+
+            string classe = "Don't be sad about the class you chose," +
+                " you can always restart the game!";
+
+            string gameNotGood = "If you don't like reading, then this" +
+                " game is not for you!";
+
+            string lookAround = "As you enter an area you should always" +
+                " 'look around'! By doing so, you get a list of items," +
+                " enemies and npc's in it!";
+
+            // Array of tips
+            string[] tips = new string[] { cheatTip, detect,
+                warning, gems, classe, cheatTip, lookAround, cheatTip};
+
+            // Display a tip
+            tipO = _random.Next(0, tips.Length);
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"*protip: {tips[tipO]}");
+            Console.ForegroundColor = ConsoleColor.Gray;
+        }
 
         // Output item pick up message
         public static void UpdateItemFeed(Player p)

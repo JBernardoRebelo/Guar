@@ -37,7 +37,7 @@ namespace Guar
             };
 
             // Get file for backstory
-            //rnd.BackStory_1("BackStory_1.txt");
+            rnd.BackStory_1("BackStory_1.txt");
 
             // Hello player, pick role
             r = rnd.RolePicker();
@@ -65,9 +65,12 @@ namespace Guar
             // Display game state
             rnd.DisplayGameMode(area.GameState);
 
+            rnd.DisplayTip();
+
             // Exploration mode 1
             do
             {
+
                 // Action option
                 option = rnd.Option();
 
@@ -89,18 +92,21 @@ namespace Guar
         }
 
         // Advantage is player advantage, who attacked first
-        private void BattleLoop(Player p, AbstractEnemy enemy, bool advantage)
+        private void BattleLoop
+            (Player p, AbstractEnemy enemy, bool advantage, AbstractArea area)
         {
-            if(advantage)
+            rnd.DisplayGameMode(area.GameState);
+
+            if (advantage)
             {
                 // Player attack with advantage
             }
-            while(enemy.Health > 0)
+            while (enemy.Health > 0)
             {
                 Console.WriteLine("You are being attacked");
                 enemy.AttackBehaviour.Attack(p, enemy);
 
-                if(p.HP < 0)
+                if (p.HP < 0)
                 {
                     break;
                 }
@@ -124,12 +130,10 @@ namespace Guar
                     if (enemy.Detect(p, moves))
                     {
                         area.GameState = GameState.Battle;
-
                         // No advantage
-                        BattleLoop(p, enemy, false);
+                        BattleLoop(p, enemy, false, area);
                     }
                 }
-                rnd.DisplayGameMode(area.GameState);
             }
         }
 
