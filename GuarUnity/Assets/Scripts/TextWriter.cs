@@ -6,14 +6,21 @@ using UnityEngine.UI;
 
 public class TextWriter : MonoBehaviour
 {
-    //[SerializeField] private static string _path = "Assets/Texts/BackStory_1.txt";
-    //private StreamReader _file = new StreamReader(_path, true);
+    private static string _path; // Static path to be given to StreamReader
+    private StreamReader _file;
+    private string _fullText;
 
+    [SerializeField] public string path; // Serializefield that gets a path
     [SerializeField] private float _wait = 0.1f;
-    [SerializeField] private string _fullText;
 
     private void Start()
     {
+        // Assign path
+        _path = path;
+        _file = new StreamReader(_path, true);
+
+        _fullText = GetFileContents();
+
         StartCoroutine(OutputText());
     }
 
@@ -32,4 +39,24 @@ public class TextWriter : MonoBehaviour
         }
     }
 
+    // Returns a string with all the file contents
+    private string GetFileContents()
+    {
+        string line;
+        string fullText = "";
+
+        while ((line = _file.ReadLine()) != null)
+        {
+            if (line.Contains(".") || line.Contains("..."))
+            {
+                fullText += "\n" + line;
+            }
+            else
+            {
+                fullText += line;
+            }
+        }
+
+        return fullText;
+    }
 }
