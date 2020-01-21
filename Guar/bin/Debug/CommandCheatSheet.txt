@@ -1,0 +1,66 @@
+
+~~~~~~~~~ CHEAT SHEET ~~~~~~~~~
+
+Known Bugs: 	
+	- Trying to merge a merged weapon will ask twice for weapon name
+	- Merging a weapon will leave in inventory only your merged weapon
+
+Starter role stats: 
+	- Paladin		- Assassin
+		Strength = 5; 		Strength = 2;
+       		Health = 6;		Health = 3;
+        	Accuracy = 5;		Accuracy = 6;
+        	Speech = 2; 		Speech = 2;
+        	Stealth = 1;		Stealth = 6;
+        	Magicka = 1; 		Magicka = 1;
+
+	Weapon: Heavy Sword	Weapon: Dagger
+
+
+	- Swindler		- Wizard    
+                Strength = 1; 		Strength = 1;
+                Health = 3;		Health = 3;
+                Accuracy = 5;		Accuracy = 5;
+                Speech = 6;		Speech = 3;
+                Stealth = 3;		Stealth = 2;
+                Magicka = 1;		Magicka = 6;
+
+	Weapon: Dagger		Weapon: Staff
+
+Color codes:
+	- Cyan -> Player updates
+	- Dark Yellow -> Stats and inventory
+	- Red -> Enemy
+	- Green -> Friendly
+	- Gray -> Narrator/Neutral Npcs
+
+Actions you can do while Exploring:
+	- (CheatSheet) Call This sheet
+	- (Tip) Shows a tip
+	- (Inventory) Shows inventory
+	- (Stats) Shows player stats
+	- (North or South) Travel to desired place
+	- (Look around) Show interactable items
+	- (Pick up (item name)) Picks up an item and place in inventory -- PICK UP ALL ITEMS IMPLEMENTED
+	- (Attack) Attacks an entity -- NOT IMPLEMENTED
+	- (Persuade (NPC name)) Convince based on Speech -- NOT IMPLEMENTED
+	- (Pick Pocket (NPC name)) Steals % of gold based on stealth -- NOT IMPLEMENTED
+	- (Quit Game) Leaves game
+	
+	- Moves are counted in every action you make
+
+Actions you can do in battle: -- NOT IMPLEMENTED
+	- (Sword swing) Hits oponent with heavy sword (Strength, Accuracy)
+	- (Stab) Stab oponent (Accuracy, Stealth)
+	- (Persuade) Convince oponent (Speech, Accuracy)
+	- (Spell) Throw spell (Magicka, Accuracy)
+	- (Run) Escape from battle (Speech or Strength (high statkes))
+	- (Sneak) Sneak away from battle (Stealth)
+	- (Quit Game) Leaves game
+
+Actions in inventory:
+	- Merge + (item name)
+	- Stats + (item name)
+	- Close (close inventory)	
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
